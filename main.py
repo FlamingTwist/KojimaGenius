@@ -6,6 +6,9 @@ from typing import Literal
 # Инициализация Pygame
 pygame.init()
 
+# Отрисовка хитбоксов
+DEBUG = False 
+
 # Цвета
 WHITE = (255, 255, 255)
 DIALOG_BLACK = (43, 43, 43)
@@ -220,7 +223,11 @@ while True:
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
-    pygame.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
+    if DEBUG:
+        pygame.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
+    player = pygame.image.load("BWsprites/Character.png")  # Замените на путь к вашему изображению
+    player = pygame.transform.scale(player, (100, 100))  # Масштабируем изображение
+    screen.blit(player, (player_x-50, player_y-50))
 
     draw_coin_counter()
 
