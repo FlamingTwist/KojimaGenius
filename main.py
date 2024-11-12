@@ -186,32 +186,21 @@ while True:
 
     # Перемещение игрока
     if game_state == "exploration":
-        if keys[pygame.K_w]:  # Вверх
+        if keys[pygame.K_w] or keys[pygame.K_UP]:  # Вверх
             player_y -= 10
-        if keys[pygame.K_s]:  # Вниз
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:  # Вниз
             player_y += 10
-        if keys[pygame.K_a]:  # Влево
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:  # Влево
             player_x -= 10
             sprite_direction = False
-        if keys[pygame.K_d]:  # Вправо
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:  # Вправо
             player_x += 10
             sprite_direction = True
 
+    if game_state == "exploration":
         if keys[pygame.K_1]:
             pygame.quit()
             sys.exit()
-
-            
-        if keys[pygame.K_UP]:  # Вверх
-            player_y -= 10
-        if keys[pygame.K_DOWN]:  # Вниз
-            player_y += 10
-        if keys[pygame.K_LEFT]:  # Влево
-            player_x -= 10
-            sprite_direction = False
-        if keys[pygame.K_RIGHT]:  # Вправо
-            player_x += 10
-            sprite_direction = True
 
     # Проверка на столкновение с границами экрана
     if player_x < 0:
