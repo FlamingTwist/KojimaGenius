@@ -196,6 +196,11 @@ while True:
         if keys[pygame.K_d]:  # Вправо
             player_x += 10
             sprite_direction = True
+
+        if keys[pygame.K_1]:
+            pygame.quit()
+            sys.exit()
+
             
         if keys[pygame.K_UP]:  # Вверх
             player_y -= 10
@@ -229,7 +234,7 @@ while True:
 
         # Проверяем возможность взаимодействия
         if not dialog_open and check_interaction(player_rect, npc):
-            if keys[pygame.K_e]:  # Взаимодействие на "E"
+            if keys[pygame.K_e] or keys[pygame.K_9]:  # Взаимодействие на "E"
                 print("Заход в NPC")
                 game_state = "dialogue"
                 dialog_open = True
