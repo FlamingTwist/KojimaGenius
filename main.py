@@ -1,6 +1,24 @@
 import pygame
 import sys
 
+# === ЛОГИКА ВЫТАЛКИВАНИЯ ===
+PUSH_FORCE = 3
+def handle_collision(player_rect, box_rect):
+    """
+    Выталкивает игрока, если он сталкивается с коробкой.
+    """
+    if player_rect.colliderect(box_rect):
+        # Вычисляем направление от коробки к игроку
+        dx = player_rect.centerx - box_rect.centerx
+        dy = player_rect.centery - box_rect.centery
+        if dx != 0 or dy != 0:  # Если вектор не нулевой
+            length = (dx**2 + dy**2)**0.5
+            dx /= length  # Нормализация
+            dy /= length  # Нормализация
+            return dx * PUSH_FORCE, dy * PUSH_FORCE
+    return 0, 0
+# === END ЛОГИКА ВЫТАЛКИВАНИЯ ===
+
 # Инициализация Pygame
 pygame.init()
 
@@ -67,16 +85,11 @@ while True:
     # Проверка на столкновение с препятствиями
     player_rect = pygame.Rect(player_x, player_y, player_width, player_height)
     for obstacle in obstacles:
-        if player_rect.colliderect(obstacle):
-            # Если столкновение, откатим игрока назад (можно улучшить логику)
-            if keys[pygame.K_w]:
-                player_y += player_speed
-            if keys[pygame.K_s]:
-                player_y -= player_speed
-            if keys[pygame.K_a]:
-                player_x += player_speed
-            if keys[pygame.K_d]:
-                player_x -= player_speed
+        # Проверка столкновений
+        dx, dy = handle_collision(player_rect, obstacle)
+        # Применение выталкивания
+        player_x += dx
+        player_y += dy
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
