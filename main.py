@@ -85,21 +85,36 @@ def draw_dialogue_window():
 
     # Текст "Вы открыли сундук"
     text = font.render("DO YOU LIKE HURTING OTHER PEOPLE?", True, WHITE)
-    text_rect = text.get_rect(center=(SCREEN_WIDTH * (1/3), dialog_y + 40))
+    text_rect = text.get_rect(center=(SCREEN_WIDTH // 3, dialog_y + 40))
     screen.blit(text, text_rect)
 
+    # Настройки кнопок
+    BUTTON_FILL_COLOR = DIALOG_BLACK  # Цвет заливки кнопок
+    BUTTON_BORDER_COLOR = WHITE          # Цвет обводки кнопок
+    BUTTON_TEXT_COLOR = WHITE            # Цвет текста кнопок
+    BUTTON_X = SCREEN_WIDTH // 7   # Положение кнопок по X
+    BUTTONS_Y = SCREEN_HEIGHT // 4   # Положение кнопок по X
+    BUTTON_INTERVAL = 10                 # Отступ между кнопками
+    BUTTON_WIDTH = 280                   # Ширина кнопок
+    BUTTON_HEIGHT = 40                   # Высота кнопок
+    BUTTON_FONT = pygame.font.SysFont(None, 24)
+
     # Кнопка "Выйти из сундука"
-    exit_button_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 20, 200, 40)
-    pygame.draw.rect(screen, (200, 200, 200), exit_button_rect)  # Серый цвет
-    pygame.draw.rect(screen, BLACK, exit_button_rect, 2)  # Обводка
-    exit_text = font.render("Выйти из сундука", True, BLACK)
+    exit_button_rect = pygame.Rect(
+        BUTTON_X, BUTTONS_Y + (BUTTON_HEIGHT + BUTTON_INTERVAL) * 2, BUTTON_WIDTH, BUTTON_HEIGHT
+    )
+    pygame.draw.rect(screen, BUTTON_FILL_COLOR, exit_button_rect)  # Заливка
+    pygame.draw.rect(screen, BUTTON_BORDER_COLOR, exit_button_rect, 2)  # Обводка
+    exit_text = BUTTON_FONT.render("Выйти из сундука", True, BUTTON_TEXT_COLOR)
     screen.blit(exit_text, exit_text.get_rect(center=exit_button_rect.center))
 
     # Кнопка "Понюхать сундук и выйти"
-    sniff_button_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 40, 200, 40)
-    pygame.draw.rect(screen, (200, 200, 200), sniff_button_rect)  # Серый цвет
-    pygame.draw.rect(screen, BLACK, sniff_button_rect, 2)  # Обводка
-    sniff_text = font.render("Понюхать сундук и выйти", True, BLACK)
+    sniff_button_rect = pygame.Rect(
+        BUTTON_X, BUTTONS_Y + (BUTTON_HEIGHT + BUTTON_INTERVAL) * 3, BUTTON_WIDTH, BUTTON_HEIGHT
+    )
+    pygame.draw.rect(screen, BUTTON_FILL_COLOR, sniff_button_rect)  # Заливка
+    pygame.draw.rect(screen, BUTTON_BORDER_COLOR, sniff_button_rect, 2)  # Обводка
+    sniff_text = BUTTON_FONT.render("Понюхать сундук и выйти", True, BUTTON_TEXT_COLOR)
     screen.blit(sniff_text, sniff_text.get_rect(center=sniff_button_rect.center))
 
     return exit_button_rect, sniff_button_rect  # Возвращаем области кнопок
