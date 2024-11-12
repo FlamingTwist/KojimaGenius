@@ -285,7 +285,7 @@ while True:
                 dialog_open = False  # Закрыть диалог
                 game_state = "exploration"
             elif sniff_button.collidepoint(mouse_pos):
-                print("Вы получили монетку и вышли!")  # Логика нюханья сундука
+                print("Вы получили монетку и вышли!") 
                 coin_count += 1
                 dialog_open = False  # Закрыть диалог
                 game_state = "exploration"
