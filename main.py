@@ -196,6 +196,17 @@ while True:
         if keys[pygame.K_d]:  # Вправо
             player_x += 10
             sprite_direction = True
+            
+        if keys[pygame.K_UP]:  # Вверх
+            player_y -= 10
+        if keys[pygame.K_DOWN]:  # Вниз
+            player_y += 10
+        if keys[pygame.K_LEFT]:  # Влево
+            player_x -= 10
+            sprite_direction = False
+        if keys[pygame.K_RIGHT]:  # Вправо
+            player_x += 10
+            sprite_direction = True
 
     # Проверка на столкновение с границами экрана
     if player_x < 0:
