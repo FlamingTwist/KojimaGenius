@@ -223,6 +223,10 @@ while True:
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
+    background = pygame.image.load("BWsprites/Background.png")  # Замените на путь к вашему изображению
+    background = pygame.transform.scale(background, (800, 600))  # Масштабируем изображение
+    screen.blit(background, (0, 0))
+
     if DEBUG:
         pygame.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
     player = pygame.image.load("BWsprites/Character.png")  # Замените на путь к вашему изображению
