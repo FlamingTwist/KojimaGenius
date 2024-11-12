@@ -1,5 +1,6 @@
 import pygame
 import sys
+from typing import Literal
 
 
 # Инициализация Pygame
@@ -50,6 +51,40 @@ def check_interaction(player_rect, chest):
     distance = ((player_center[0] - chest_center[0])**2 + (player_center[1] - chest_center[1])**2)**0.5
     return distance <= INTERACTION_RADIUS
 
+# === ДИАЛОГОВОЕ ОКНО ===
+def draw_dialogue_window():
+    """Рисует диалоговое окно с текстом и кнопками."""
+    # Размеры окна
+    dialog_width = 400
+    dialog_height = 200
+    dialog_x = (SCREEN_WIDTH - dialog_width) // 2
+    dialog_y = SCREEN_HEIGHT - dialog_height - 10
+
+    # Рисуем окно диалога
+    pygame.draw.rect(screen, (240, 240, 240), (dialog_x, dialog_y, dialog_width, dialog_height))  # Белое окно
+    pygame.draw.rect(screen, BLACK, (dialog_x, dialog_y, dialog_width, dialog_height), 3)  # Обводка
+
+    # Текст "Вы открыли сундук"
+    text = font.render("Вы открыли сундук", True, BLACK)
+    text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, dialog_y + 40))
+    screen.blit(text, text_rect)
+
+    # Кнопка "Выйти из сундука"
+    exit_button_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 20, 200, 40)
+    pygame.draw.rect(screen, (200, 200, 200), exit_button_rect)  # Серый цвет
+    pygame.draw.rect(screen, BLACK, exit_button_rect, 2)  # Обводка
+    exit_text = font.render("Выйти из сундука", True, BLACK)
+    screen.blit(exit_text, exit_text.get_rect(center=exit_button_rect.center))
+
+    # Кнопка "Понюхать сундук и выйти"
+    sniff_button_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 40, 200, 40)
+    pygame.draw.rect(screen, (200, 200, 200), sniff_button_rect)  # Серый цвет
+    pygame.draw.rect(screen, BLACK, sniff_button_rect, 2)  # Обводка
+    sniff_text = font.render("Понюхать сундук и выйти", True, BLACK)
+    screen.blit(sniff_text, sniff_text.get_rect(center=sniff_button_rect.center))
+
+    return exit_button_rect, sniff_button_rect  # Возвращаем области кнопок
+
 
 # Определяем размеры экрана
 SCREEN_WIDTH = 800
@@ -75,7 +110,9 @@ obstacles = [
 
 # Главный игровой цикл
 clock = pygame.time.Clock()
-temp = 0 # todo удалить потом
+dialog_open = False  # Флаг для открытия диалогового окна
+clicked_chest = None  # Хранит сундук, который открылся
+game_state : Literal["exploration", "dialogue", "paused"] = "exploration"
 
 while True:
     # Обработка событий
@@ -86,15 +123,17 @@ while True:
 
     # Получаем нажатые клавиши
     keys = pygame.key.get_pressed()
+
     # Перемещение игрока
-    if keys[pygame.K_w]:  # Вверх
-        player_y -= 10
-    if keys[pygame.K_s]:  # Вниз
-        player_y += 10
-    if keys[pygame.K_a]:  # Влево
-        player_x -= 10
-    if keys[pygame.K_d]:  # Вправо
-        player_x += 10
+    if game_state == "exploration":
+        if keys[pygame.K_w]:  # Вверх
+            player_y -= 10
+        if keys[pygame.K_s]:  # Вниз
+            player_y += 10
+        if keys[pygame.K_a]:  # Влево
+            player_x -= 10
+        if keys[pygame.K_d]:  # Вправо
+            player_x += 10
 
     # Проверка на столкновение с границами экрана
     if player_x < 0:
@@ -116,11 +155,12 @@ while True:
         player_y += dy
 
         # Проверяем возможность взаимодействия
-        if check_interaction(player_rect, obstacle):
-            # Если игрок в зоне взаимодействия и нажата клавиша E
-            if keys[pygame.K_e]:
-                print(f"Сундук открыт {temp}")  # Сообщение об открытии сундука
-                temp += 1
+        if not dialog_open and check_interaction(player_rect, obstacle):
+            if keys[pygame.K_e]:  # Открытие сундука на "E"
+                print("Заход в сундук")
+                game_state = "dialogue"
+                dialog_open = True
+                clicked_chest = obstacle
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
@@ -130,6 +170,21 @@ while True:
     for obstacle in obstacles:
         pygame.draw.rect(screen, BLACK, obstacle)
         draw_interaction_zone(obstacle)
+
+    # Отображение диалогового окна, если оно открыто
+    if dialog_open:
+        exit_button, sniff_button = draw_dialogue_window()
+
+        # Проверка кликов мыши
+        if pygame.mouse.get_pressed()[0]:  # ЛКМ нажата
+            mouse_pos = pygame.mouse.get_pos()
+            if exit_button.collidepoint(mouse_pos):
+                dialog_open = False  # Закрыть диалог
+                game_state = "exploration"
+            elif sniff_button.collidepoint(mouse_pos):
+                print("Вы понюхали сундук и вышли!")  # Логика нюханья сундука
+                dialog_open = False  # Закрыть диалог
+                game_state = "exploration"
 
     draw_coin_counter()
 
