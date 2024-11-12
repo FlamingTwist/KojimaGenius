@@ -150,12 +150,12 @@ player_y = SCREEN_HEIGHT // 2 - player_height // 2
 PLAYER_SPEED = 5
 
 # Препятствия
-obstacle_width = 100
-obstacle_height = 100
-obstacles = [
-    pygame.Rect(200, 150, obstacle_width, obstacle_height),
-    pygame.Rect(400, 300, obstacle_width, obstacle_height),
-    pygame.Rect(600, 450, obstacle_width, obstacle_height)
+npc_width = 50
+npc_height = 50
+npcs = [
+    pygame.Rect(200, 150, npc_width, npc_height),
+    pygame.Rect(400, 300, npc_width, npc_height),
+    pygame.Rect(600, 450, npc_width, npc_height)
 ]
 
 # Диалоги
@@ -167,7 +167,7 @@ dialog_open = False  # Флаг для открытия диалогового �
 clicked_chest = None  # Хранит сундук, который открылся
 head = pygame.image.load("BWsprites/Head.png")  # Замените на путь к вашему изображению
 head = pygame.transform.scale(head, (380, 380))  # Масштабируем изображение
-image_rect = head.get_rect(center=(SCREEN_WIDTH - 160, SCREEN_HEIGHT // 2 - 20))
+image_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
 
 # Главный игровой цикл
 clock = pygame.time.Clock()
@@ -206,20 +206,20 @@ while True:
 
     # Препятствия и их логика
     player_rect = pygame.Rect(player_x, player_y, player_width, player_height)
-    for obstacle in obstacles:
+    for npc in npcs:
         # Проверка столкновений
-        dx, dy = handle_collision(player_rect, obstacle)
+        dx, dy = handle_collision(player_rect, npc)
         # Применение выталкивания
         player_x += dx
         player_y += dy
 
         # Проверяем возможность взаимодействия
-        if not dialog_open and check_interaction(player_rect, obstacle):
+        if not dialog_open and check_interaction(player_rect, npc):
             if keys[pygame.K_e]:  # Открытие сундука на "E"
                 print("Заход в NPC")
                 game_state = "dialogue"
                 dialog_open = True
-                clicked_chest = obstacle
+                clicked_npc = npc
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
@@ -231,10 +231,14 @@ while True:
 
     draw_coin_counter()
 
-    # TODO понять почему у нас два цикла obstacles раздельно
-    for obstacle in obstacles:
-        pygame.draw.rect(screen, BLACK, obstacle)
-        draw_interaction_zone(obstacle)
+    # TODO понять почему у нас два цикла npc раздельно
+    for npc in npcs:
+        if DEBUG:
+            pygame.draw.rect(screen, BLACK, npc)
+            draw_interaction_zone(npc)
+        npc_image = pygame.image.load("BWsprites/NPC.png")  # Замените на путь к вашему изображению
+        npc_image = pygame.transform.scale(npc_image, (100, 100))  # Масштабируем изображение
+        screen.blit(npc_image, (npc.centerx-50, npc.centery-75))
 
     # Отображение диалогового окна, если оно открыто
     if dialog_open:
