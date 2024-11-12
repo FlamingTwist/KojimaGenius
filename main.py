@@ -8,9 +8,11 @@ pygame.init()
 
 # Цвета
 WHITE = (255, 255, 255)
+DIALOG_BLACK = (43, 43, 43)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
+MIAMI_PURPLE = (150,71,190)
 
 # === ЛОГИКА ВЫТАЛКИВАНИЯ ===
 PUSH_FORCE = 5
@@ -55,18 +57,34 @@ def check_interaction(player_rect, chest):
 def draw_dialogue_window():
     """Рисует диалоговое окно с текстом и кнопками."""
     # Размеры окна
-    dialog_width = 400
+    dialog_width = SCREEN_WIDTH + 6
     dialog_height = 200
     dialog_x = (SCREEN_WIDTH - dialog_width) // 2
-    dialog_y = SCREEN_HEIGHT - dialog_height - 10
+    dialog_y = SCREEN_HEIGHT - dialog_height
 
-    # Рисуем окно диалога
-    pygame.draw.rect(screen, (240, 240, 240), (dialog_x, dialog_y, dialog_width, dialog_height))  # Белое окно
-    pygame.draw.rect(screen, BLACK, (dialog_x, dialog_y, dialog_width, dialog_height), 3)  # Обводка
+    # Координаты полотна для головы персонажа
+    start_x, start_y = 450, 0       # Верхняя точка линии
+    end_x, end_y = 600, SCREEN_HEIGHT  # Нижняя точка линии
+
+    pygame.draw.polygon(screen, MIAMI_PURPLE, [
+        (end_x, end_y),                 # Нижняя точка линии
+        (SCREEN_WIDTH, SCREEN_HEIGHT),  # Нижний правый угол экрана
+        (SCREEN_WIDTH, 0),              # Верхний правый угол экрана
+        (start_x, start_y)              # Верхняя точка линии
+    ])
+    pygame.draw.line(screen, WHITE, (start_x+3, start_y), (end_x+3, end_y), 3)
+
+    # Рисуем нижнее окно диалога
+    pygame.draw.rect(screen, DIALOG_BLACK, (dialog_x, dialog_y, dialog_width, dialog_height))
+    pygame.draw.rect(screen, WHITE, (dialog_x, dialog_y+3, dialog_width+2, dialog_height), 3)  # Обводка
+
+    # Рисуем верхнее окно диалога
+    pygame.draw.rect(screen, DIALOG_BLACK, (dialog_x, 0, dialog_width, dialog_height / 2))
+    pygame.draw.rect(screen, WHITE, (dialog_x, -3, dialog_width+2, dialog_height / 2), 3)  # Обводка
 
     # Текст "Вы открыли сундук"
-    text = font.render("Вы открыли сундук", True, BLACK)
-    text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, dialog_y + 40))
+    text = font.render("DO YOU LIKE HURTING OTHER PEOPLE?", True, WHITE)
+    text_rect = text.get_rect(center=(SCREEN_WIDTH * (1/3), dialog_y + 40))
     screen.blit(text, text_rect)
 
     # Кнопка "Выйти из сундука"
@@ -166,6 +184,8 @@ while True:
     screen.fill(WHITE)  # Заполняем экран белым
     pygame.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
 
+    draw_coin_counter()
+
     # TODO понять почему у нас два цикла obstacles раздельно
     for obstacle in obstacles:
         pygame.draw.rect(screen, BLACK, obstacle)
@@ -185,8 +205,6 @@ while True:
                 print("Вы понюхали сундук и вышли!")  # Логика нюханья сундука
                 dialog_open = False  # Закрыть диалог
                 game_state = "exploration"
-
-    draw_coin_counter()
 
     # Обновляем экран
     pygame.display.flip()
