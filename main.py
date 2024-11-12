@@ -5,6 +5,12 @@ import sys
 # Инициализация Pygame
 pygame.init()
 
+# Цвета
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+GREY = (200, 200, 200)
+
 # === ЛОГИКА ВЫТАЛКИВАНИЯ ===
 PUSH_FORCE = 5
 def handle_collision(player_rect, box_rect):
@@ -30,17 +36,26 @@ def draw_coin_counter():
     coin_text = font.render(f"Coins: {coin_count}", True, BLACK)
     screen.blit(coin_text, (SCREEN_WIDTH - coin_text.get_width() - 10, 10))
 
+# === ЗОНЫ ВЗАИМОДЕЙСТВИЯ ===
+INTERACTION_RADIUS = 100
+
+def draw_interaction_zone(chest):
+    """Рисует круг взаимодействия вокруг сундука."""
+    pygame.draw.circle(screen, GREY, chest.center, INTERACTION_RADIUS, 1)
+
+def check_interaction(player_rect, chest):
+    """Проверяет, находится ли игрок в зоне взаимодействия с сундуком."""
+    player_center = player_rect.center
+    chest_center = chest.center
+    distance = ((player_center[0] - chest_center[0])**2 + (player_center[1] - chest_center[1])**2)**0.5
+    return distance <= INTERACTION_RADIUS
+
 
 # Определяем размеры экрана
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('2D Game with Pygame')
-
-# Цвета
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
 
 # Персонаж
 player_width = 50
@@ -60,6 +75,7 @@ obstacles = [
 
 # Главный игровой цикл
 clock = pygame.time.Clock()
+temp = 0 # todo удалить потом
 
 while True:
     # Обработка событий
@@ -99,13 +115,21 @@ while True:
         player_x += dx
         player_y += dy
 
+        # Проверяем возможность взаимодействия
+        if check_interaction(player_rect, obstacle):
+            # Если игрок в зоне взаимодействия и нажата клавиша E
+            if keys[pygame.K_e]:
+                print(f"Сундук открыт {temp}")  # Сообщение об открытии сундука
+                temp += 1
+
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
     pygame.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
 
-    # Рисуем препятствия
+    # TODO понять почему у нас два цикла obstacles раздельно
     for obstacle in obstacles:
         pygame.draw.rect(screen, BLACK, obstacle)
+        draw_interaction_zone(obstacle)
 
     draw_coin_counter()
 
