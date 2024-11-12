@@ -231,7 +231,6 @@ while True:
 
     draw_coin_counter()
 
-    # TODO понять почему у нас два цикла npc раздельно
     for npc in npcs:
         if DEBUG:
             pygame.draw.rect(screen, BLACK, npc)
