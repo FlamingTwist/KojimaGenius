@@ -2,7 +2,7 @@ import pygame
 import sys
 
 # === ЛОГИКА ВЫТАЛКИВАНИЯ ===
-PUSH_FORCE = 3
+PUSH_FORCE = 5
 def handle_collision(player_rect, box_rect):
     """
     Выталкивает игрока, если он сталкивается с коробкой.
