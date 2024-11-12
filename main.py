@@ -148,6 +148,7 @@ player_height = 50
 player_x = SCREEN_WIDTH // 2 - player_width // 2
 player_y = SCREEN_HEIGHT // 2 - player_height // 2
 PLAYER_SPEED = 5
+sprite_direction = True
 
 # Препятствия
 npc_width = 50
@@ -164,7 +165,7 @@ MAX_ANGLE = 10
 ANGLE_SPEED = 0.20
 clockwise = True
 dialog_open = False  # Флаг для открытия диалогового окна
-clicked_chest = None  # Хранит сундук, который открылся
+clicked_npc = None  # Хранит нпс, который говорит
 head = pygame.image.load("BWsprites/Head.png")  # Замените на путь к вашему изображению
 head = pygame.transform.scale(head, (380, 380))  # Масштабируем изображение
 image_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
@@ -191,8 +192,10 @@ while True:
             player_y += 10
         if keys[pygame.K_a]:  # Влево
             player_x -= 10
+            sprite_direction = False
         if keys[pygame.K_d]:  # Вправо
             player_x += 10
+            sprite_direction = True
 
     # Проверка на столкновение с границами экрана
     if player_x < 0:
@@ -215,7 +218,7 @@ while True:
 
         # Проверяем возможность взаимодействия
         if not dialog_open and check_interaction(player_rect, npc):
-            if keys[pygame.K_e]:  # Открытие сундука на "E"
+            if keys[pygame.K_e]:  # Взаимодействие на "E"
                 print("Заход в NPC")
                 game_state = "dialogue"
                 dialog_open = True
@@ -230,7 +233,9 @@ while True:
     if DEBUG:
         pygame.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
     player = pygame.image.load("BWsprites/Character.png")  # Замените на путь к вашему изображению
-    player = pygame.transform.scale(player, (100, 100))  # Масштабируем изображение
+    player = pygame.transform.scale(player, (100, 100)) # Масштабируем изображение
+    if sprite_direction == True:
+        player = pygame.transform.flip(player, True, False)
     screen.blit(player, (player_x-50, player_y-50))
 
     draw_coin_counter()
