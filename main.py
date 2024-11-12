@@ -105,19 +105,19 @@ def draw_dialogue_window():
     )
     pygame.draw.rect(screen, BUTTON_FILL_COLOR, exit_button_rect)  # Заливка
     pygame.draw.rect(screen, BUTTON_BORDER_COLOR, exit_button_rect, 2)  # Обводка
-    exit_text = BUTTON_FONT.render("Выйти из сундука", True, BUTTON_TEXT_COLOR)
+    exit_text = BUTTON_FONT.render("Ох, я ошибся NPC", True, BUTTON_TEXT_COLOR)
     screen.blit(exit_text, exit_text.get_rect(center=exit_button_rect.center))
 
     # Кнопка "Понюхать сундук и выйти"
-    sniff_button_rect = pygame.Rect(
+    coin_button_rect = pygame.Rect(
         BUTTON_X, BUTTONS_Y + (BUTTON_HEIGHT + BUTTON_INTERVAL) * 3, BUTTON_WIDTH, BUTTON_HEIGHT
     )
-    pygame.draw.rect(screen, BUTTON_FILL_COLOR, sniff_button_rect)  # Заливка
-    pygame.draw.rect(screen, BUTTON_BORDER_COLOR, sniff_button_rect, 2)  # Обводка
-    sniff_text = BUTTON_FONT.render("Понюхать сундук и выйти", True, BUTTON_TEXT_COLOR)
-    screen.blit(sniff_text, sniff_text.get_rect(center=sniff_button_rect.center))
+    pygame.draw.rect(screen, BUTTON_FILL_COLOR, coin_button_rect)  # Заливка
+    pygame.draw.rect(screen, BUTTON_BORDER_COLOR, coin_button_rect, 2)  # Обводка
+    coin_text = BUTTON_FONT.render("Получить монетку", True, BUTTON_TEXT_COLOR)
+    screen.blit(coin_text, coin_text.get_rect(center=coin_button_rect.center))
 
-    return exit_button_rect, sniff_button_rect  # Возвращаем области кнопок
+    return exit_button_rect, coin_button_rect  # Возвращаем области кнопок
 
 # === ВРАЩЕНИЕ ГОЛОВЫ В ДИАЛОГЕ ===
 def rotate_image(image, rect, angle):
@@ -216,7 +216,7 @@ while True:
         # Проверяем возможность взаимодействия
         if not dialog_open and check_interaction(player_rect, obstacle):
             if keys[pygame.K_e]:  # Открытие сундука на "E"
-                print("Заход в сундук")
+                print("Заход в NPC")
                 game_state = "dialogue"
                 dialog_open = True
                 clicked_chest = obstacle
@@ -262,7 +262,8 @@ while True:
                 dialog_open = False  # Закрыть диалог
                 game_state = "exploration"
             elif sniff_button.collidepoint(mouse_pos):
-                print("Вы понюхали сундук и вышли!")  # Логика нюханья сундука
+                print("Вы получили монетку и вышли!")  # Логика нюханья сундука
+                coin_count += 1
                 dialog_open = False  # Закрыть диалог
                 game_state = "exploration"
 
