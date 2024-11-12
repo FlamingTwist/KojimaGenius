@@ -247,7 +247,9 @@ while True:
     player = pygame.transform.scale(player, (100, 100)) # Масштабируем изображение
     if sprite_direction == True:
         player = pygame.transform.flip(player, True, False)
-    screen.blit(player, (player_x-50, player_y-50))
+        screen.blit(player, (player_x, player_y-50))
+    else:
+        screen.blit(player, (player_x-50, player_y-50))
 
     draw_coin_counter()
 
