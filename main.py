@@ -162,12 +162,9 @@ ANGLE_SPEED = 0.20
 clockwise = True
 dialog_open = False  # Флаг для открытия диалогового окна
 clicked_chest = None  # Хранит сундук, который открылся
-# head = pygame.image.load('image.png')  # Замените на путь к вашему изображению
-# head = pygame.transform.scale(image, (200, 200))  # Масштабируем изображение
-square_size = 180
-square_surface = pygame.Surface((square_size, square_size), pygame.SRCALPHA)  # Прозрачная поверхность
-square_surface.fill(MIAMI_RED)
-image_rect = square_surface.get_rect(center=(SCREEN_WIDTH - 150, SCREEN_HEIGHT // 2 - 50))
+head = pygame.image.load("BWsprites/Head.png")  # Замените на путь к вашему изображению
+head = pygame.transform.scale(head, (380, 380))  # Масштабируем изображение
+image_rect = head.get_rect(center=(SCREEN_WIDTH - 160, SCREEN_HEIGHT // 2 - 20))
 
 # Главный игровой цикл
 clock = pygame.time.Clock()
@@ -250,7 +247,7 @@ while True:
             angle = -MAX_ANGLE + ANGLE_SPEED
 
         # Вращение изображения
-        rotated_image, rotated_rect = rotate_image(square_surface, image_rect, angle)
+        rotated_image, rotated_rect = rotate_image(head, image_rect, angle)
         
         # Отображение вращённого изображения
         screen.blit(rotated_image, rotated_rect)
