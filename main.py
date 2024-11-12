@@ -13,6 +13,7 @@ BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 GREY = (200, 200, 200)
 MIAMI_PURPLE = (150,71,190)
+MIAMI_RED = (248,87,67)
 
 # === ЛОГИКА ВЫТАЛКИВАНИЯ ===
 PUSH_FORCE = 5
@@ -103,6 +104,19 @@ def draw_dialogue_window():
 
     return exit_button_rect, sniff_button_rect  # Возвращаем области кнопок
 
+# === ВРАЩЕНИЕ ГОЛОВЫ В ДИАЛОГЕ ===
+def rotate_image(image, rect, angle):
+    """
+    Вращает изображение и возвращает его новую поверхность и прямоугольник.
+
+    :param image: исходное изображение
+    :param rect: прямоугольник изображения
+    :param angle: угол вращения
+    :return: вращённое изображение и обновлённый прямоугольник
+    """
+    rotated_image = pygame.transform.rotate(image, angle)
+    new_rect = rotated_image.get_rect(center=rect.center)
+    return rotated_image, new_rect
 
 # Определяем размеры экрана
 SCREEN_WIDTH = 800
@@ -126,10 +140,22 @@ obstacles = [
     pygame.Rect(600, 450, obstacle_width, obstacle_height)
 ]
 
-# Главный игровой цикл
-clock = pygame.time.Clock()
+# Диалоги
+angle = 0
+MAX_ANGLE = 10
+ANGLE_SPEED = 0.20
+clockwise = True
 dialog_open = False  # Флаг для открытия диалогового окна
 clicked_chest = None  # Хранит сундук, который открылся
+# head = pygame.image.load('image.png')  # Замените на путь к вашему изображению
+# head = pygame.transform.scale(image, (200, 200))  # Масштабируем изображение
+square_size = 180
+square_surface = pygame.Surface((square_size, square_size), pygame.SRCALPHA)  # Прозрачная поверхность
+square_surface.fill(MIAMI_RED)
+image_rect = square_surface.get_rect(center=(SCREEN_WIDTH - 150, SCREEN_HEIGHT // 2 - 50))
+
+# Главный игровой цикл
+clock = pygame.time.Clock()
 game_state : Literal["exploration", "dialogue", "paused"] = "exploration"
 
 while True:
@@ -194,6 +220,25 @@ while True:
     # Отображение диалогового окна, если оно открыто
     if dialog_open:
         exit_button, sniff_button = draw_dialogue_window()
+
+        # Логика контролируемого вращения головы
+        # TODO зависит от fps ¯\_(ツ)_/¯
+        if angle <= MAX_ANGLE and clockwise:
+            angle += ANGLE_SPEED
+        elif angle > MAX_ANGLE:
+            clockwise = not(clockwise)
+            angle = MAX_ANGLE - ANGLE_SPEED
+        elif angle >= -MAX_ANGLE and not(clockwise):
+            angle -= ANGLE_SPEED
+        else:
+            clockwise = not(clockwise)
+            angle = -MAX_ANGLE + ANGLE_SPEED
+
+        # Вращение изображения
+        rotated_image, rotated_rect = rotate_image(square_surface, image_rect, angle)
+        
+        # Отображение вращённого изображения
+        screen.blit(rotated_image, rotated_rect)
 
         # Проверка кликов мыши
         if pygame.mouse.get_pressed()[0]:  # ЛКМ нажата
