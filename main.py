@@ -302,4 +302,4 @@ while True:
     pygm.display.flip()
 
     # Ограничиваем количество кадров в секунду
-    clock.tick(60)
+    clock.tick(60) 
