@@ -34,11 +34,11 @@ def handle_collision(player_rect, box_rect):
     return 0, 0
 
 # === ДОБАВЛЕНИЕ СЧЁТЧИКА МОНЕТОК ===
-font = pygm.font.SysFont(None, 36)
+FONT = pygm.font.SysFont(None, 36)
 coin_count = 0
 def draw_coin_counter():
     """Рисует счётчик монеток в правом верхнем углу"""
-    coin_text = font.render(f"Coins: {coin_count}", True, BLACK)
+    coin_text = FONT.render(f"Coins: {coin_count}", True, BLACK)
     screen.blit(coin_text, (SCREEN_WIDTH - coin_text.get_width() - 10, 10))
 
 # === ЗОНЫ ВЗАИМОДЕЙСТВИЯ ===
@@ -86,7 +86,7 @@ def draw_dialogue_window():
     pygm.draw.rect(screen, WHITE, (dialog_x, -3, dialog_width+2, dialog_height / 2), 3)
 
     # Текст NPC
-    text = font.render("DO YOU LIKE HURTING OTHER PEOPLE?", True, WHITE)
+    text = FONT.render("DO YOU LIKE HURTING OTHER PEOPLE?", True, WHITE)
     text_rect = text.get_rect(center=(SCREEN_WIDTH // 3, dialog_y + 40))
     screen.blit(text, text_rect)
 
