@@ -178,7 +178,7 @@ clicked_npc = None  # Хранит NPC, который говорит
 head = pygm.image.load("BWsprites/Head.png")
 # TODO убрать масштабирование вручную, использовать 400% Aseprite
 head = pygm.transform.scale(head, (380, 380))
-image_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
+head_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
 
 # Главный игровой цикл
 clock = pygm.time.Clock()
@@ -283,7 +283,7 @@ while True:
             angle = -MAX_ANGLE + ANGLE_SPEED
 
         # Вращение изображения
-        rotated_image, rotated_rect = rotate_image(head, image_rect, angle)
+        rotated_image, rotated_rect = rotate_image(head, head_rect, angle)
         screen.blit(rotated_image, rotated_rect)
 
         # Проверка кликов мыши
@@ -302,4 +302,4 @@ while True:
     pygm.display.flip()
 
     # Ограничиваем количество кадров в секунду
-    clock.tick(60) 
+    clock.tick(60)
