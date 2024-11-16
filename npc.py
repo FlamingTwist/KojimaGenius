@@ -6,9 +6,11 @@
 #     pygm.Rect(600, 450, npc_width, npc_height)
 # ]
 
-# Возможные действия
-GIVE_COIN = "coin"
-TAKE_BERRY = "berry"
+def give_coin():
+    print("You received a coin!")
+
+def take_berry():
+    print("You received a berry!")
 
 GregNPC = {
     "name": "Greg",
@@ -37,7 +39,7 @@ GregNPC = {
         {#2
             "text": "Here is your coin.",
             "answers": [
-                {"action": GIVE_COIN, "next_dialog": None, "answer": "thank you"}
+                {"action": give_coin, "next_dialog": None, "answer": "thank you"}
             ]
         },
         {#3
@@ -48,3 +50,41 @@ GregNPC = {
         }
     ]
 }
+
+def get_dialog_text(npc):
+    """Текущий текст NPC и список вариантов ответов для диалогового окна"""
+    current_index = npc["dialog_index"]
+    if not(0 <= current_index < len(npc["dialogs"]["answers"])):
+        raise ValueError("Выход за пределы диалогов")
+    
+    dialog = npc["dialogs"][current_index]
+    
+    # Получаем текст и список текстов ответов
+    text = dialog["text"]
+    answers = [answer["answer"] for answer in dialog["answers"]]
+    
+    return text, answers
+
+def progress_questline(npc, selected_answer):
+    """Выполняет действие на основе выбранного ответа"""
+    current_index = npc["dialog_index"]
+    dialog = npc["dialogs"][current_index]
+    answers = dialog["answers"]
+    
+    # Проверяем, что выбранный индекс корректен
+    if not(0 <= selected_answer < len(answers)):
+        raise ValueError("Выход за пределы ответов")
+
+    selected_answer = answers[selected_answer]
+    
+    action = selected_answer.get("action")
+    if action:
+        action() # Вызов соответсвующей функции
+
+    # Обновляем индекс диалога
+    next_dialog = selected_answer.get("next_dialog")
+    if next_dialog is not None:
+        npc["dialog_index"] = next_dialog
+
+    return None
+
