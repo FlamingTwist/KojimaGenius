@@ -1,6 +1,7 @@
 import pygame as pygm
 import sys
 from typing import Literal
+from npc import *
 
 
 # Инициализация pygm
@@ -44,14 +45,14 @@ def draw_coin_counter():
 # === ЗОНЫ ВЗАИМОДЕЙСТВИЯ ===
 INTERACTION_RADIUS = 100
 
-def draw_interaction_zone(chest):
+def draw_interaction_zone(hitbox):
     """Рисует круг взаимодействия вокруг сундука"""
-    pygm.draw.circle(screen, GREY, chest.center, INTERACTION_RADIUS, 1)
+    pygm.draw.circle(screen, GREY, hitbox.center, INTERACTION_RADIUS, 1)
 
-def check_interaction(player_rect, npc):
+def check_interaction(player_rect, hitbox):
     """Проверяет, находится ли игрок в зоне взаимодействия с сундуком"""
     player_center = player_rect.center
-    chest_center = npc.center
+    chest_center = hitbox.center
     distance = ((player_center[0] - chest_center[0])**2 + (player_center[1] - chest_center[1])**2)**0.5
     return distance <= INTERACTION_RADIUS
 
@@ -159,13 +160,9 @@ player_y = SCREEN_HEIGHT // 2 - player_height // 2
 PLAYER_SPEED = 5
 flip_sprite = True
 
-# Препятствия / NPC
-npc_width = 50
-npc_height = 50
+# Препятствия (rect) / NPC
 npcs = [
-    pygm.Rect(200, 150, npc_width, npc_height),
-    pygm.Rect(400, 300, npc_width, npc_height),
-    pygm.Rect(600, 450, npc_width, npc_height)
+    GregNPC
 ]
 
 # Диалоги
@@ -225,19 +222,20 @@ while True:
     # Препятствия и их логика
     player_rect = pygm.Rect(player_x, player_y, player_width, player_height)
     for npc in npcs:
+        hitbox = npc["hitbox"]
         # Проверка столкновений
-        dx, dy = handle_collision(player_rect, npc)
+        dx, dy = handle_collision(player_rect, hitbox)
         # Применение выталкивания
         player_x += dx
         player_y += dy
 
         # Проверяем возможность взаимодействия
-        if not dialog_open and check_interaction(player_rect, npc):
+        if not dialog_open and check_interaction(player_rect, hitbox):
             if keys[pygm.K_e] or keys[pygm.K_9]:  # Взаимодействие на "E"
                 print("Заход в NPC")
                 game_state = "dialogue"
                 dialog_open = True
-                clicked_npc = npc
+                clicked_npc = npc # TODO
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
@@ -258,12 +256,13 @@ while True:
     draw_coin_counter()
 
     for npc in npcs:
+        hitbox = npc["hitbox"]
         if DEBUG:
-            pygm.draw.rect(screen, BLACK, npc)
-            draw_interaction_zone(npc)
+            pygm.draw.rect(screen, BLACK, hitbox)
+            draw_interaction_zone(hitbox)
         npc_image = pygm.image.load("BWsprites/NPC.png")
         npc_image = pygm.transform.scale(npc_image, (100, 100))
-        screen.blit(npc_image, (npc.centerx-50, npc.centery-75))
+        screen.blit(npc_image, (hitbox.centerx-50, hitbox.centery-75))
 
     # Отображение диалогового окна, если оно открыто
     if dialog_open:

@@ -1,5 +1,7 @@
-# npc_width = 50
-# npc_height = 50
+import pygame as pygm
+
+npc_width = 50
+npc_height = 50
 # npcs = [
 #     pygm.Rect(200, 150, npc_width, npc_height),
 #     pygm.Rect(400, 300, npc_width, npc_height),
@@ -15,8 +17,7 @@ def take_berry():
 GregNPC = {
     "name": "Greg",
     "sprite": "image.png",
-    "x": 200,
-    "y": 150,
+    "hitbox": pygm.Rect(200, 150, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
         {#0
