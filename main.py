@@ -57,7 +57,7 @@ def check_interaction(player_rect, hitbox):
     return distance <= INTERACTION_RADIUS
 
 # === ДИАЛОГОВОЕ ОКНО ===
-def draw_dialogue_window():
+def draw_dialogue_window(clicked_npc):
     """Рисует диалоговое окно с текстом и кнопками"""
     # Размеры окна
     # TODO подровнять диалоги по этим перемнным, а не вручуню делать +/- пиксели
@@ -86,8 +86,10 @@ def draw_dialogue_window():
     pygm.draw.rect(screen, DIALOG_BLACK, (dialog_x, 0, dialog_width, dialog_height / 2))
     pygm.draw.rect(screen, WHITE, (dialog_x, -3, dialog_width+2, dialog_height / 2), 3)
 
+    text, answer = get_dialog_text(clicked_npc) # Получаем текст диалога
+
     # Текст NPC
-    text = FONT.render("DO YOU LIKE HURTING OTHER PEOPLE?", True, WHITE)
+    text = FONT.render(text, True, WHITE)
     text_rect = text.get_rect(center=(SCREEN_WIDTH // 3, dialog_y + 40))
     screen.blit(text, text_rect)
 
@@ -102,25 +104,26 @@ def draw_dialogue_window():
     BUTTON_HEIGHT = 40                   # Высота кнопок
     BUTTON_FONT = pygm.font.SysFont(None, 24)
 
-    # Кнопка 2
-    exit_button_rect = pygm.Rect(
-        BUTTON_X, BUTTONS_Y + (BUTTON_HEIGHT + BUTTON_INTERVAL) * 2, BUTTON_WIDTH, BUTTON_HEIGHT
-    )
-    pygm.draw.rect(screen, BUTTON_FILL_COLOR, exit_button_rect)  # Заливка
-    pygm.draw.rect(screen, BUTTON_BORDER_COLOR, exit_button_rect, 2)  # Обводка
-    exit_text = BUTTON_FONT.render("Ох, я ошибся NPC", True, BUTTON_TEXT_COLOR)
-    screen.blit(exit_text, exit_text.get_rect(center=exit_button_rect.center))
+    buttons: list[pygm.Rect] = []
 
-    # Кнопка 3
-    coin_button_rect = pygm.Rect(
-        BUTTON_X, BUTTONS_Y + (BUTTON_HEIGHT + BUTTON_INTERVAL) * 3, BUTTON_WIDTH, BUTTON_HEIGHT
-    )
-    pygm.draw.rect(screen, BUTTON_FILL_COLOR, coin_button_rect)  # Заливка
-    pygm.draw.rect(screen, BUTTON_BORDER_COLOR, coin_button_rect, 2)  # Обводка
-    coin_text = BUTTON_FONT.render("Получить монетку", True, BUTTON_TEXT_COLOR)
-    screen.blit(coin_text, coin_text.get_rect(center=coin_button_rect.center))
+    for i in range(len(answer)): # формирует 4 кнопки-ответа
+        if (answer[i] == ""):
+            continue
 
-    return exit_button_rect, coin_button_rect  # Возвращает области кнопок
+        button = pygm.Rect(
+            BUTTON_X, 
+            BUTTONS_Y + (BUTTON_HEIGHT + BUTTON_INTERVAL) * i, 
+            BUTTON_WIDTH, 
+            BUTTON_HEIGHT
+        )
+        pygm.draw.rect(screen, BUTTON_FILL_COLOR, button)  # Заливка
+        pygm.draw.rect(screen, BUTTON_BORDER_COLOR, button, 2)  # Обводка
+        exit_text = BUTTON_FONT.render(answer[i], True, BUTTON_TEXT_COLOR)
+        screen.blit(exit_text, exit_text.get_rect(center=button.center))
+        buttons.append(button)
+
+    # return buttons[0], buttons[1], buttons[2], buttons[3]  # Возвращает области кнопок
+    return buttons
 
 # === ВРАЩЕНИЕ ГОЛОВЫ В ДИАЛОГЕ ===
 def rotate_image(image, rect, angle):
@@ -266,7 +269,8 @@ while True:
 
     # Отображение диалогового окна, если оно открыто
     if dialog_open:
-        exit_button, coin_button = draw_dialogue_window()
+        # TODO progress quest
+        buttons = draw_dialogue_window(clicked_npc)
 
         # Логика контролируемого вращения головы
         # TODO зависит от fps ¯\_(ツ)_/¯
@@ -288,14 +292,19 @@ while True:
         # Проверка кликов мыши
         if pygm.mouse.get_pressed()[0]:  # ЛКМ нажата
             mouse_pos = pygm.mouse.get_pos()
-            if exit_button.collidepoint(mouse_pos):
-                dialog_open = False  # Закрыть диалог
-                game_state = "exploration"
-            elif coin_button.collidepoint(mouse_pos):
-                print("Вы получили монетку и вышли!") 
-                coin_count += 1
-                dialog_open = False  # Закрыть диалог
-                game_state = "exploration"
+            for i in range(len(buttons)):
+                if buttons[i].collidepoint(mouse_pos):
+                    dialog_open = False  # Закрыть диалог
+                    game_state = "exploration"
+            
+            # if exit_button.collidepoint(mouse_pos):
+            #     dialog_open = False  # Закрыть диалог
+            #     game_state = "exploration"
+            # elif coin_button.collidepoint(mouse_pos):
+            #     print("Вы получили монетку и вышли!") 
+            #     coin_count += 1
+            #     dialog_open = False  # Закрыть диалог
+            #     game_state = "exploration"
 
     # Обновляем экран
     pygm.display.flip()

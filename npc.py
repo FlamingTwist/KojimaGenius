@@ -27,6 +27,8 @@ GregNPC = {
             "answers": [
                 {"action": None, "next_dialog": 1, "answer": "normal"},
                 {"action": None, "next_dialog": 1, "answer": "hungry"},
+                {"action": None, "next_dialog": 1, "answer": "bored"},
+                {"action": None, "next_dialog": 1, "answer": "happy"}
             ]
             # ответ на ответ не предусмотрен, нужно начинать следующий диалог
         },
@@ -52,17 +54,17 @@ GregNPC = {
     ]
 }
 
-def get_dialog_text(npc):
+def get_dialog_text(npc) -> tuple[str, list[str]]:
     """Текущий текст NPC и список вариантов ответов для диалогового окна"""
     current_index = npc["dialog_index"]
-    if not(0 <= current_index < len(npc["dialogs"]["answers"])):
+    if not(0 <= current_index < len(npc["dialogs"])):
         raise ValueError("Выход за пределы диалогов")
     
     dialog = npc["dialogs"][current_index]
     
-    # Получаем текст и список текстов ответов
-    text = dialog["text"]
-    answers = [answer["answer"] for answer in dialog["answers"]]
+    # Получаем текст и список текстов ответов (не больше 4)
+    text: str = dialog["text"]
+    answers: list[str] = [answer["answer"] for answer in dialog["answers"]]
     
     return text, answers
 
