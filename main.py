@@ -239,7 +239,7 @@ while True:
                 print("Заход в NPC")
                 game_state = "dialogue"
                 dialog_open = True
-                clicked_npc = npc # TODO
+                clicked_npc = npc
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
@@ -270,7 +270,6 @@ while True:
 
     # Отображение диалогового окна, если оно открыто
     if dialog_open:
-        # TODO progress quest
         buttons = draw_dialogue_window(clicked_npc)
 
         # Логика контролируемого вращения головы
