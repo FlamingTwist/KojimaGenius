@@ -139,6 +139,8 @@ def rotate_image(image, rect, angle):
     new_rect = rotated_image.get_rect(center=rect.center)
     return rotated_image, new_rect
 
+def blit_sort(x):
+    return x[2]
 
 """ 
  ###### ####### #####  ###### #######  
@@ -257,17 +259,17 @@ while True:
     background = pygm.transform.scale(background, (800, 600))
     screen.blit(background, (0, 0))
 
+    blit_order = []
+
     if DEBUG:
         pygm.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
     player = pygm.image.load("BWsprites/Character.png")
     player = pygm.transform.scale(player, (100, 100))
     if flip_sprite == True:
         player = pygm.transform.flip(player, True, False)
-        screen.blit(player, (player_x, player_y-50))
+        blit_order.append((player, player_x, player_y-50))
     else:
-        screen.blit(player, (player_x-50, player_y-50))
-
-    draw_coin_counter()
+        blit_order.append((player, player_x-50, player_y-50))
 
     for npc in npcs[current_scene]:
         hitbox = npc["hitbox"]
@@ -276,7 +278,15 @@ while True:
             draw_interaction_zone(hitbox)
         npc_image = pygm.image.load("BWsprites/NPC.png")
         npc_image = pygm.transform.scale(npc_image, (100, 100))
-        screen.blit(npc_image, (hitbox.centerx-50, hitbox.centery-75))
+        blit_order.append((npc_image, hitbox.centerx-50, hitbox.centery-75))
+    
+    # Сортировка персонажей по y и рендер
+    blit_order.sort(key=blit_sort)    
+
+    for sprite in blit_order:
+        screen.blit(sprite[0], (sprite[1], sprite[2]))
+
+    draw_coin_counter()
 
     # Отображение диалогового окна, если оно открыто
     if dialog_open:
