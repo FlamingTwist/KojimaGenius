@@ -165,7 +165,8 @@ flip_sprite = True
 
 # Препятствия (rect) / NPC
 npcs = [
-    GregNPC
+    [GregNPC], # Первая сцена
+    [] # Вторая сцена
 ]
 
 # Диалоги
@@ -183,6 +184,7 @@ head_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
 # Главный игровой цикл
 clock = pygm.time.Clock()
 game_state : Literal["exploration", "dialogue", "paused"] = "exploration"
+current_scene = 0
 mouse_down = False
 
 while True:
@@ -215,9 +217,17 @@ while True:
 
     # Проверка на столкновение с границами экрана
     if player_x < 0:
-        player_x = 0
+        if (current_scene == 0):
+            player_x = 0
+        else:
+            player_x = SCREEN_WIDTH - player_width
+            current_scene = 0
     if player_x + player_width > SCREEN_WIDTH:
-        player_x = SCREEN_WIDTH - player_width
+        if (current_scene == 1):
+            player_x = SCREEN_WIDTH - player_width
+        else:
+            player_x = 0
+            current_scene = 1
     if player_y < 0:
         player_y = 0
     if player_y + player_height > SCREEN_HEIGHT:
@@ -225,7 +235,7 @@ while True:
 
     # Препятствия и их логика
     player_rect = pygm.Rect(player_x, player_y, player_width, player_height)
-    for npc in npcs:
+    for npc in npcs[current_scene]:
         hitbox = npc["hitbox"]
         # Проверка столкновений
         dx, dy = handle_collision(player_rect, hitbox)
@@ -259,7 +269,7 @@ while True:
 
     draw_coin_counter()
 
-    for npc in npcs:
+    for npc in npcs[current_scene]:
         hitbox = npc["hitbox"]
         if DEBUG:
             pygm.draw.rect(screen, BLACK, hitbox)
