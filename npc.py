@@ -8,11 +8,16 @@ npc_height = 50
 #     pygm.Rect(600, 450, npc_width, npc_height)
 # ]
 
-def give_coin():
-    print("You received a coin!")
+def give_coin(game_stats):
+    print("Получена монетка!")
+    return game_stats[0], game_stats[1] + 1
 
-def take_berry():
-    print("You received a berry!")
+def take_coin(game_stats):
+    print("Потеряна монетка!")
+    return game_stats[0], game_stats[1] - 1
+
+def leave_dialog(game_stats):
+    return False, game_stats[1]
 
 GregNPC = {
     "name": "Greg",
@@ -42,13 +47,13 @@ GregNPC = {
         {#2
             "text": "Here is your coin.",
             "answers": [
-                {"action": give_coin, "next_dialog": None, "answer": "thank you"}
+                {"action": give_coin, "next_dialog": 3, "answer": "thank you"}
             ]
         },
         {#3
             "text": "Goodbye!",
             "answers": [
-                {"action": None, "next_dialog": None, "answer": "bye"}
+                {"action": leave_dialog, "next_dialog": None, "answer": "bye"}
             ]
         }
     ]
@@ -68,7 +73,7 @@ def get_dialog_text(npc) -> tuple[str, list[str]]:
     
     return text, answers
 
-def progress_questline(npc, selected_answer):
+def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[bool, int]:
     """Выполняет действие на основе выбранного ответа"""
     current_index = npc["dialog_index"]
     dialog = npc["dialogs"][current_index]
@@ -80,14 +85,16 @@ def progress_questline(npc, selected_answer):
 
     selected_answer = answers[selected_answer]
     
+    game_stats = (dialog_open, coin_count)
     action = selected_answer.get("action")
     if action:
-        action() # Вызов соответсвующей функции
+        game_stats = action(game_stats) # Вызов соответсвующей функции
 
     # Обновляем индекс диалога
     next_dialog = selected_answer.get("next_dialog")
     if next_dialog is not None:
         npc["dialog_index"] = next_dialog
 
-    return None
+    # return dialog_open, coin_count
+    return game_stats[0], game_stats[1]
 

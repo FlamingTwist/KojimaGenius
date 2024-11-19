@@ -183,6 +183,7 @@ head_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
 # Главный игровой цикл
 clock = pygm.time.Clock()
 game_state : Literal["exploration", "dialogue", "paused"] = "exploration"
+mouse_down = False
 
 while True:
     # Обработка событий
@@ -290,21 +291,17 @@ while True:
         screen.blit(rotated_image, rotated_rect)
 
         # Проверка кликов мыши
-        if pygm.mouse.get_pressed()[0]:  # ЛКМ нажата
+        if pygm.mouse.get_pressed()[0] and mouse_down == False: # ЛКМ нажата впервые
             mouse_pos = pygm.mouse.get_pos()
+            mouse_down = True
             for i in range(len(buttons)):
                 if buttons[i].collidepoint(mouse_pos):
-                    dialog_open = False  # Закрыть диалог
-                    game_state = "exploration"
-            
-            # if exit_button.collidepoint(mouse_pos):
-            #     dialog_open = False  # Закрыть диалог
-            #     game_state = "exploration"
-            # elif coin_button.collidepoint(mouse_pos):
-            #     print("Вы получили монетку и вышли!") 
-            #     coin_count += 1
-            #     dialog_open = False  # Закрыть диалог
-            #     game_state = "exploration"
+                    dialog_open, coin_count = \
+                        progress_questline(clicked_npc, i, dialog_open, coin_count)
+                    if (dialog_open == False):
+                        game_state = "exploration"
+        elif not(pygm.mouse.get_pressed()[0]) and mouse_down == True: # ЛКМ отпущена
+            mouse_down = False
 
     # Обновляем экран
     pygm.display.flip()
