@@ -35,11 +35,15 @@ def handle_collision(player_rect, box_rect):
     return 0, 0
 
 # === ДОБАВЛЕНИЕ СЧЁТЧИКА МОНЕТОК ===
-FONT = pygm.font.SysFont(None, 36)
+font_path = "fonts/Press_Start_2P/PressStart2P-Regular.ttf"
+# font_path = "fonts/Kablammo/static/Kablammo-Regular.ttf"
+FONT = pygm.font.Font(font_path, 22)
+# FONT = pygm.font.SysFont(None, 36)
+
 coin_count = 0
 def draw_coin_counter():
     """Рисует счётчик монеток в правом верхнем углу"""
-    coin_text = FONT.render(f"Coins: {coin_count}", True, BLACK)
+    coin_text = FONT.render(f"Монетки:{coin_count}", True, DIALOG_BLACK)
     screen.blit(coin_text, (SCREEN_WIDTH - coin_text.get_width() - 10, 10))
 
 # === ЗОНЫ ВЗАИМОДЕЙСТВИЯ ===
@@ -90,7 +94,8 @@ def draw_dialogue_window(clicked_npc):
 
     # Текст NPC
     text = FONT.render(text, True, WHITE)
-    text_rect = text.get_rect(center=(SCREEN_WIDTH // 3, dialog_y + 40))
+    text_rect = text.get_rect()
+    text_rect.topleft = (30, dialog_y + 22)
     screen.blit(text, text_rect)
 
     # Настройки кнопок
@@ -102,8 +107,9 @@ def draw_dialogue_window(clicked_npc):
     BUTTON_INTERVAL = 10                 # Отступ между кнопками
     BUTTON_WIDTH = 280                   # Ширина кнопок
     BUTTON_HEIGHT = 40                   # Высота кнопок
-    BUTTON_FONT = pygm.font.SysFont(None, 24)
-
+    # BUTTON_FONT = pygm.font.SysFont(None, 24)
+    BUTTON_FONT = pygm.font.Font(font_path, 16)
+    
     buttons: list[pygm.Rect] = []
 
     for i in range(len(answer)): # формирует 4 кнопки-ответа
