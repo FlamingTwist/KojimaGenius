@@ -31,8 +31,8 @@ GregNPC = {
             # ответов не более 4
             "answers": [
                 {"action": None, "next_dialog": 1, "answer": "normal"},
-                {"action": None, "next_dialog": 1, "answer": "hungry"},
-                {"action": None, "next_dialog": 1, "answer": "bored"},
+                {"action": None, "next_dialog": 1, "answer": "очень hungry"},
+                {"action": None, "next_dialog": 1, "answer": "скучно"},
                 {"action": None, "next_dialog": 1, "answer": "happy"}
             ]
             # ответ на ответ не предусмотрен, нужно начинать следующий диалог
