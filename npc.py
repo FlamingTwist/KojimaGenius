@@ -17,6 +17,9 @@ def take_coin():
 def leave_dialog():
     pass
 
+def ask_gpt4o_mini(question: str):
+    return "I'm LLM. Today is the day."
+
 GregNPC = {
     "name": "Greg",
     "sprite": "image.png",
@@ -51,7 +54,14 @@ GregNPC = {
         {#3
             "text": "Goodbye!",
             "answers": [
-                {"action": leave_dialog, "next_dialog": None, "answer": "bye"}
+                {"action": leave_dialog, "next_dialog": None, "answer": "bye"},
+                {"action": ask_gpt4o_mini, "next_dialog": 4, "answer": "задать вопрос"}
+            ]
+        },
+        {#4
+            "text": "Этот текст будет затёрт ответом от gpt4o-mini",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": 3, "answer": "..."}
             ]
         }
     ]
@@ -70,6 +80,10 @@ def get_dialog_text(npc) -> tuple[str, list[str]]:
     answers: list[str] = [answer["answer"] for answer in dialog["answers"]]
     
     return text, answers
+
+def draw_ask_window() -> str:
+    # TODO сделать паузу в игре и нарисовать окно ввода
+    return ask_gpt4o_mini("question???")
 
 def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[bool, int]:
     """Выполняет действие на основе выбранного ответа"""
@@ -90,8 +104,10 @@ def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[b
         coin_count -= 1
     elif action == leave_dialog:
         dialog_open = False
-    elif action:
-        action()
+    elif action == ask_gpt4o_mini:
+        next_dialog = selected_answer.get("next_dialog")
+        next_dialog = npc["dialogs"][next_dialog]
+        next_dialog["text"] = draw_ask_window()
 
     # Обновляем индекс диалога
     next_dialog = selected_answer.get("next_dialog")
