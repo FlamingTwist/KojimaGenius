@@ -261,7 +261,7 @@ while True:
         blit_order.append((npc_image, hitbox.centerx-50, hitbox.centery-75))
     
     # Сортировка персонажей по y и рендер
-    blit_order.sort(key=blit_sort)    
+    blit_order.sort(key=blit_sort) # TODO добавить эллипсы теней прямо в список/функцию
 
     for sprite in blit_order:
         screen.blit(sprite[0], (sprite[1], sprite[2]))

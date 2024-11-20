@@ -18,6 +18,7 @@ def leave_dialog():
     pass
 
 def ask_gpt4o_mini(question: str):
+    # TODO add gpt support
     return "I'm LLM. Today is the day."
 
 GregNPC = {
@@ -106,7 +107,7 @@ def draw_ask_window(screen: pygm.Surface) -> str:
                 if event.key == pygm.K_RETURN: # Enter
                     return ask_gpt4o_mini(input_text)
 
-                elif event.key == pygm.K_BACKSPACE:  # Backspace
+                elif event.key == pygm.K_BACKSPACE: # Backspace
                     input_text = input_text[:-1]
 
                 else:
