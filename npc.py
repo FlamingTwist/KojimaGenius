@@ -8,16 +8,14 @@ npc_height = 50
 #     pygm.Rect(600, 450, npc_width, npc_height)
 # ]
 
-def give_coin(game_stats: tuple[bool, int]) -> tuple[bool, int]:
+def give_coin():
     print("Получена монетка!")
-    return game_stats[0], game_stats[1] + 1
 
-def take_coin(game_stats: tuple[bool, int]) -> tuple[bool, int]:
+def take_coin():
     print("Потеряна монетка!")
-    return game_stats[0], game_stats[1] - 1
 
-def leave_dialog(game_stats: tuple[bool, int]) -> tuple[bool, int]:
-    return False, game_stats[1]
+def leave_dialog():
+    pass
 
 GregNPC = {
     "name": "Greg",
@@ -85,16 +83,20 @@ def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[b
 
     selected_answer = answers[selected_answer]
     
-    game_stats = (dialog_open, coin_count)
     action = selected_answer.get("action")
-    if action:
-        game_stats = action(game_stats) # Вызов соответсвующей функции
+    if action == give_coin:
+        coin_count += 1
+    elif action == take_coin:
+        coin_count -= 1
+    elif action == leave_dialog:
+        dialog_open = False
+    elif action:
+        action()
 
     # Обновляем индекс диалога
     next_dialog = selected_answer.get("next_dialog")
     if next_dialog is not None:
         npc["dialog_index"] = next_dialog
 
-    # return dialog_open, coin_count
-    return game_stats[0], game_stats[1]
+    return dialog_open, coin_count
 
