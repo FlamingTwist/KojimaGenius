@@ -81,9 +81,48 @@ def get_dialog_text(npc) -> tuple[str, list[str]]:
     
     return text, answers
 
-def draw_ask_window() -> str:
-    # TODO сделать паузу в игре и нарисовать окно ввода
-    return ask_gpt4o_mini("question???")
+def draw_ask_window(screen: pygm.Surface) -> str:
+    """Отображает окно с вводом текста поверх основной игры"""
+    prompt_text = "Введите вопрос:"
+    input_text = "" # Вводимый текст
+    window_font = pygm.font.Font(font_path, 16)
+    
+    overlay = pygm.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+    overlay.set_alpha(200)  # Прозрачность затемнения
+    overlay.fill(DIALOG_BLACK)
+    screen.blit(overlay, (0, 0))
+
+    dialog_x = SCREEN_WIDTH // 8
+    dialog_y = SCREEN_HEIGHT // 3
+    dialog_width = SCREEN_WIDTH - 2 * dialog_x
+    dialog_height = SCREEN_HEIGHT - 2 * dialog_y
+
+    while True:
+        for event in pygm.event.get():
+            if event.type == pygm.QUIT:
+                return "..."
+
+            if event.type == pygm.KEYDOWN:
+                if event.key == pygm.K_RETURN: # Enter
+                    return ask_gpt4o_mini(input_text)
+
+                elif event.key == pygm.K_BACKSPACE:  # Backspace
+                    input_text = input_text[:-1]
+
+                else:
+                    # Добавляем символ в текст, если это не служебная клавиша
+                    input_text += event.unicode
+
+        pygm.draw.rect(screen, WHITE, (dialog_x, dialog_y, dialog_width, dialog_height))
+        pygm.draw.rect(screen, DIALOG_BLACK, (dialog_x + 2, dialog_y + 2, dialog_width - 4, dialog_height - 4), 2)
+
+        prompt_surface = window_font.render(prompt_text, True, DIALOG_BLACK)
+        input_surface = window_font.render(input_text, True, DIALOG_BLACK)
+        screen.blit(prompt_surface, (dialog_x + 20, dialog_y + 20))
+        screen.blit(input_surface, (dialog_x + 20, dialog_y + 2*20 + window_font.get_height())) 
+
+        pygm.display.flip()
+
 
 def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[bool, int]:
     """Выполняет действие на основе выбранного ответа"""
@@ -107,7 +146,7 @@ def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[b
     elif action == ask_gpt4o_mini:
         next_dialog = selected_answer.get("next_dialog")
         next_dialog = npc["dialogs"][next_dialog]
-        next_dialog["text"] = draw_ask_window()
+        next_dialog["text"] = draw_ask_window(screen)
 
     # Обновляем индекс диалога
     next_dialog = selected_answer.get("next_dialog")
