@@ -323,7 +323,7 @@ while True:
                 if buttons[i].collidepoint(mouse_pos):
                     dialog_open, coin_count = progress_questline(
                         clicked_npc,
-                         i,
+                        i,
                         dialog_open,
                         coin_count)
                     if (dialog_open == False):
