@@ -1,12 +1,8 @@
-import pygame as pygm
 import sys
 from typing import Literal
 from settings import *
 from npc import *
 
-
-# Инициализация pygm
-pygm.init()
 
 # === ЛОГИКА ВЫТАЛКИВАНИЯ ===
 PUSH_FORCE = 5
@@ -24,11 +20,6 @@ def handle_collision(player_rect, box_rect):
     return 0, 0
 
 # === ДОБАВЛЕНИЕ СЧЁТЧИКА МОНЕТОК ===
-font_path = "fonts/Press_Start_2P/PressStart2P-Regular.ttf"
-# font_path = "fonts/Kablammo/static/Kablammo-Regular.ttf"
-FONT = pygm.font.Font(font_path, 22)
-# FONT = pygm.font.SysFont(None, 36)
-
 coin_count = 0
 def draw_coin_counter():
     """Рисует счётчик монеток в правом верхнем углу"""
@@ -145,9 +136,6 @@ def blit_sort(x):
 ######     ##  ##   ## ##   ##   ##    
 """
 
-
-screen = pygm.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygm.display.set_caption('2D Game with pygm')
 
 # Персонаж
 player_width = 50

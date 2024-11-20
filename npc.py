@@ -1,4 +1,3 @@
-import pygame as pygm
 from settings import *
 
 npc_width = 50
