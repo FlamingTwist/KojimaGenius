@@ -321,8 +321,11 @@ while True:
             mouse_down = True
             for i in range(len(buttons)):
                 if buttons[i].collidepoint(mouse_pos):
-                    dialog_open, coin_count = \
-                        progress_questline(clicked_npc, i, dialog_open, coin_count)
+                    dialog_open, coin_count = progress_questline(
+                        clicked_npc,
+                         i,
+                        dialog_open,
+                        coin_count)
                     if (dialog_open == False):
                         game_state = "exploration"
         elif not(pygm.mouse.get_pressed()[0]) and mouse_down == True: # ЛКМ отпущена
