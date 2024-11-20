@@ -8,15 +8,15 @@ npc_height = 50
 #     pygm.Rect(600, 450, npc_width, npc_height)
 # ]
 
-def give_coin(game_stats):
+def give_coin(game_stats: tuple[bool, int]) -> tuple[bool, int]:
     print("Получена монетка!")
     return game_stats[0], game_stats[1] + 1
 
-def take_coin(game_stats):
+def take_coin(game_stats: tuple[bool, int]) -> tuple[bool, int]:
     print("Потеряна монетка!")
     return game_stats[0], game_stats[1] - 1
 
-def leave_dialog(game_stats):
+def leave_dialog(game_stats: tuple[bool, int]) -> tuple[bool, int]:
     return False, game_stats[1]
 
 GregNPC = {
