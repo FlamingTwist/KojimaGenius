@@ -124,6 +124,26 @@ def get_dialog_text(npc) -> tuple[str, list[str]]:
     
     return text, answers
 
+def text_to_lines(text: str, font: pygm.font.Font, allowed_width: int) -> list[str]:
+    current_line = ""
+    lines = []
+
+    # Разбиваем текст на строки
+    for char in text:
+        test_line = f"{current_line}{char}"
+        input_surface = font.render(test_line, True, BLACK)
+        if input_surface.get_width() <= allowed_width:
+            current_line = test_line
+        else:
+            lines.append(current_line)
+            current_line = char
+
+    # Добавляем последнюю строку
+    if current_line:
+        lines.append(current_line)
+    
+    return lines if lines != [] else [""]
+
 def draw_ask_window(npc, screen: pygm.Surface) -> str:
     """Отображает окно с вводом текста поверх основной игры"""
     prompt_text = "Введите вопрос:"
@@ -160,10 +180,18 @@ def draw_ask_window(npc, screen: pygm.Surface) -> str:
         pygm.draw.rect(screen, DIALOG_BLACK, (dialog_x + 2, dialog_y + 2, dialog_width - 4, dialog_height - 4), 2)
 
         prompt_surface = window_font.render(prompt_text, True, DIALOG_BLACK)
-        input_surface = window_font.render(input_text, True, DIALOG_BLACK)
         screen.blit(prompt_surface, (dialog_x + 20, dialog_y + 20))
-        screen.blit(input_surface, (dialog_x + 20, dialog_y + 2*20 + window_font.get_height())) 
 
+        text_lines = text_to_lines(input_text, window_font, dialog_width - 2*20)
+        text_lines = text_lines[-4:] # Выводим только 4 последних строки
+        
+        for i in range(len(text_lines)):
+            input_surface = window_font.render(text_lines[i], True, DIALOG_BLACK)
+            screen.blit(input_surface, (
+                dialog_x + 20, 
+                dialog_y + 20 + (window_font.get_height() + 20) * (i + 1)
+                )) 
+            
         pygm.display.flip()
 
 
