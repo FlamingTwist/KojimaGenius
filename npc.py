@@ -1,4 +1,7 @@
 from settings import *
+import os
+from dotenv import load_dotenv
+import requests
 
 npc_width = 50
 npc_height = 50
@@ -17,9 +20,25 @@ def take_coin():
 def leave_dialog():
     pass
 
-def ask_gpt4o_mini(question: str):
-    # TODO add gpt support
-    return "I'm LLM. Today is the day."
+def ask_mistral(prompt: str) -> str:
+    # TODO узнать про новые модели
+    API_URL = "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1"
+    try:
+        # Загрузить переменные из .env файла
+        load_dotenv()
+        API_TOKEN = os.getenv("API_TOKEN") 
+        
+        headers = {"Authorization": f"Bearer {API_TOKEN}"}
+
+        full_prompt = f"<s>[INST] {prompt} [/INST]"
+        payload = {
+            "inputs": full_prompt,
+            "parameters": {"max_new_tokens": 1024}
+        }
+        response = requests.post(API_URL, headers=headers, json=payload)
+        return response.json()[0]['generated_text'][len(full_prompt):]
+    except:
+        return ""
 
 GregNPC = {
     "name": "Greg",
