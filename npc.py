@@ -190,7 +190,7 @@ def draw_ask_window(npc, screen: pygm.Surface) -> str:
             screen.blit(input_surface, (
                 dialog_x + 20, 
                 dialog_y + 20 + (window_font.get_height() + 20) * (i + 1)
-                )) 
+            )) 
             
         pygm.display.flip()
 

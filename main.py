@@ -44,7 +44,6 @@ def check_interaction(player_rect, hitbox):
 def draw_dialogue_window(clicked_npc):
     """Рисует диалоговое окно с текстом и кнопками"""
     # Размеры окна
-    # TODO подровнять диалоги по этим перемнным, а не вручуню делать +/- пиксели
     dialog_width = SCREEN_WIDTH + 6
     dialog_height = 200
     dialog_x = (SCREEN_WIDTH - dialog_width) // 2
@@ -74,11 +73,13 @@ def draw_dialogue_window(clicked_npc):
 
     SMALL_FONT = pygm.font.Font(font_path, 16)
 
+    # Имя NPC
+    name = FONT.render(clicked_npc["name"], True, WHITE)
+    screen.blit(name, (SCREEN_WIDTH - (70 + name.get_width()), 35))
+
     # Текст NPC
     text = SMALL_FONT.render(text, True, WHITE)
-    text_rect = text.get_rect()
-    text_rect.topleft = (30, dialog_y + 22)
-    screen.blit(text, text_rect)
+    screen.blit(text, (30, dialog_y + 22))
 
     # Настройки кнопок
     BUTTON_FILL_COLOR = DIALOG_BLACK  # Цвет заливки кнопок
