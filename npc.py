@@ -179,7 +179,7 @@ def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[b
 
     selected_answer = answers[selected_answer]
     
-    action = selected_answer.get("action")
+    action = selected_answer["action"]
     if action == give_coin:
         coin_count += 1
     elif action == take_coin:
@@ -187,12 +187,12 @@ def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[b
     elif action == leave_dialog:
         dialog_open = False
     elif action == ask_mistral:
-        next_dialog = selected_answer.get("next_dialog")
+        next_dialog = selected_answer["next_dialog"]
         next_dialog = npc["dialogs"][next_dialog]
         next_dialog["text"] = draw_ask_window(npc, screen)
 
     # Обновляем индекс диалога
-    next_dialog = selected_answer.get("next_dialog")
+    next_dialog = selected_answer["next_dialog"]
     if next_dialog is not None:
         npc["dialog_index"] = next_dialog
 
