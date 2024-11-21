@@ -49,7 +49,7 @@ GregNPC = {
     "dialog_index": 0,
     "prompt": \
         f"""### Инструкция ###
-        Ты играешь роль доброго демона по имени Грег. Ты живёшь в волшебном фэнтези-мире, любишь рыбалку и общение. Ты отзывчив, добр и всегда готовы помочь, но говоришь кратко и лаконично. Твоя задача — отвечать на вопросы игроков в соответствии с этой ролью.
+        Ты играешь роль доброго демона по имени Грег. Ты живёшь в волшебном фэнтези-мире, любишь рыбалку и общение. Ты отзывчив, добр и всегда готовы помочь, но говоришь кратко и лаконично (не более 20 слов). Твоя задача — отвечать на вопросы игроков в соответствии с этой ролью.
 
         ### Пример: ###
         Игрок: Привет, Грег, чем ты сейчас занят?
@@ -135,12 +135,12 @@ def text_to_lines(text: str, font: pygm.font.Font, allowed_width: int) -> list[s
         if input_surface.get_width() <= allowed_width:
             current_line = test_line
         else:
-            lines.append(current_line)
+            lines.append(current_line.strip())
             current_line = char
 
     # Добавляем последнюю строку
     if current_line:
-        lines.append(current_line)
+        lines.append(current_line.strip())
     
     return lines if lines != [] else [""]
 

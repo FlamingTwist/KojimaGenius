@@ -78,8 +78,15 @@ def draw_dialogue_window(clicked_npc):
     screen.blit(name, (SCREEN_WIDTH - (70 + name.get_width()), 35))
 
     # Текст NPC
-    text = SMALL_FONT.render(text, True, WHITE)
-    screen.blit(text, (30, dialog_y + 22))
+    text = text_to_lines(text, SMALL_FONT, SCREEN_WIDTH - 2*30)
+    text = text[-5:] # Выводим только 5 последних строк
+    
+    for i in range(len(text)):
+        text_surface = SMALL_FONT.render(text[i], True, WHITE)
+        screen.blit(text_surface, (
+            30, 
+            dialog_y + 22 + (SMALL_FONT.get_height() + 20) * i
+        )) 
 
     # Настройки кнопок
     BUTTON_FILL_COLOR = DIALOG_BLACK  # Цвет заливки кнопок
