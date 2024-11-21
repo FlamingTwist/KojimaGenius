@@ -296,7 +296,7 @@ while True:
         buttons = draw_dialogue_window(clicked_npc)
 
         # Логика контролируемого вращения головы
-        # TODO зависит от fps ¯\_(ツ)_/¯
+        # зависит от fps ¯\_(ツ)_/¯
         if angle <= MAX_ANGLE and clockwise:
             angle += ANGLE_SPEED
         elif angle > MAX_ANGLE:
