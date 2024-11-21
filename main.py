@@ -270,7 +270,21 @@ while True:
         blit_order.append((npc_image, hitbox.centerx-50, hitbox.centery-75))
     
     # Сортировка персонажей по y и рендер
-    blit_order.sort(key=blit_sort) # TODO добавить эллипсы теней прямо в список/функцию
+    blit_order.sort(key=blit_sort)
+    
+    # Но сначала тени -> создаем Surface с альфа-каналом
+    shadow_surface = pygm.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygm.SRCALPHA) 
+    for sprite in blit_order:
+        shadow_hight = 24
+        shadow_indent = 1
+        transparency = 25
+        pygm.draw.ellipse(shadow_surface, (0, 0, 0, transparency), (
+            sprite[1] + shadow_indent, 
+            sprite[2] + sprite[0].get_height() - shadow_hight // 2,
+            sprite[0].get_width() - 2 * shadow_indent,
+            shadow_hight)
+        )
+    screen.blit(shadow_surface, (0, 0))
 
     for sprite in blit_order:
         screen.blit(sprite[0], (sprite[1], sprite[2]))
