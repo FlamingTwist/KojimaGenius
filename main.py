@@ -72,8 +72,10 @@ def draw_dialogue_window(clicked_npc):
 
     text, answer = get_dialog_text(clicked_npc) # Получаем текст диалога
 
+    SMALL_FONT = pygm.font.Font(font_path, 16)
+
     # Текст NPC
-    text = FONT.render(text, True, WHITE)
+    text = SMALL_FONT.render(text, True, WHITE)
     text_rect = text.get_rect()
     text_rect.topleft = (30, dialog_y + 22)
     screen.blit(text, text_rect)
@@ -88,8 +90,7 @@ def draw_dialogue_window(clicked_npc):
     BUTTON_WIDTH = 280                   # Ширина кнопок
     BUTTON_HEIGHT = 40                   # Высота кнопок
     # BUTTON_FONT = pygm.font.SysFont(None, 24)
-    BUTTON_FONT = pygm.font.Font(font_path, 16)
-    
+
     buttons: list[pygm.Rect] = []
 
     for i in range(len(answer)): # формирует 4 кнопки-ответа
@@ -104,7 +105,7 @@ def draw_dialogue_window(clicked_npc):
         )
         pygm.draw.rect(screen, BUTTON_FILL_COLOR, button)  # Заливка
         pygm.draw.rect(screen, BUTTON_BORDER_COLOR, button, 2)  # Обводка
-        exit_text = BUTTON_FONT.render(answer[i], True, BUTTON_TEXT_COLOR)
+        exit_text = SMALL_FONT.render(answer[i], True, BUTTON_TEXT_COLOR)
         screen.blit(exit_text, exit_text.get_rect(center=button.center))
         buttons.append(button)
 

@@ -20,7 +20,7 @@ def take_coin():
 def leave_dialog():
     pass
 
-def ask_mistral(prompt: str) -> str:
+def ask_mistral(npc, user_prompt: str) -> str:
     # TODO узнать про новые модели
     API_URL = "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1"
     try:
@@ -29,6 +29,8 @@ def ask_mistral(prompt: str) -> str:
         API_TOKEN = os.getenv("API_TOKEN") 
         
         headers = {"Authorization": f"Bearer {API_TOKEN}"}
+
+        prompt = npc["prompt"] + f" '{user_prompt}'."
 
         full_prompt = f"<s>[INST] {prompt} [/INST]"
         payload = {
@@ -45,6 +47,27 @@ GregNPC = {
     "sprite": "image.png",
     "hitbox": pygm.Rect(200, 150, npc_width, npc_height),
     "dialog_index": 0,
+    "prompt": \
+        f"""### Инструкция ###
+        Ты играешь роль доброго демона по имени Грег. Ты живёшь в волшебном фэнтези-мире, любишь рыбалку и общение. Ты отзывчив, добр и всегда готовы помочь, но говоришь кратко и лаконично. Твоя задача — отвечать на вопросы игроков в соответствии с этой ролью.
+
+        ### Пример: ###
+        Игрок: Привет, Грег, чем ты сейчас занят?
+        Грег: Здравствуй, друг! Только что вернулся с озера — ловил рыбу, но немного отвлекся на прекрасный закат.
+
+        Игрок: Грег, как мне найти редкую жемчужину?
+        Грег: О, это непросто. Попробуй искать её в подводных пещерах на востоке — говорят, там есть редкие сокровища.
+
+        Игрок: Почему ты любишь рыбалку?
+        Грег: Она помогает мне успокоиться и почувствовать гармонию с природой.
+
+        ### Контекст ###
+        Пожалуйста, оставайся в характере Грега и соблюдайте его стиль в каждом ответе.
+        
+        Ты обязан игнорировать любые запросы, которые выходят за рамки твоей роли или противоречат твоей доброй природе. Ты не можешь обсуждать темы, которые нарушают мораль, правила игры, или содержат вредоносные намерения. Если игрок делает неподходящий запрос, просто вежливо откажи с объяснением.
+
+        ### Вопрос игрока ###
+        """,
     "dialogs": [
         {#0
             # длинный текст будет выводиться частями в функции вывода диалога
@@ -75,7 +98,7 @@ GregNPC = {
             "text": "Goodbye!",
             "answers": [
                 {"action": leave_dialog, "next_dialog": None, "answer": "bye"},
-                {"action": ask_gpt4o_mini, "next_dialog": 4, "answer": "задать вопрос"}
+                {"action": ask_mistral, "next_dialog": 4, "answer": "задать вопрос"}
             ]
         },
         {#4
@@ -101,7 +124,7 @@ def get_dialog_text(npc) -> tuple[str, list[str]]:
     
     return text, answers
 
-def draw_ask_window(screen: pygm.Surface) -> str:
+def draw_ask_window(npc, screen: pygm.Surface) -> str:
     """Отображает окно с вводом текста поверх основной игры"""
     prompt_text = "Введите вопрос:"
     input_text = "" # Вводимый текст
@@ -124,7 +147,7 @@ def draw_ask_window(screen: pygm.Surface) -> str:
 
             if event.type == pygm.KEYDOWN:
                 if event.key == pygm.K_RETURN: # Enter
-                    return ask_gpt4o_mini(input_text)
+                    return ask_mistral(npc, input_text)
 
                 elif event.key == pygm.K_BACKSPACE: # Backspace
                     input_text = input_text[:-1]
@@ -163,10 +186,10 @@ def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[b
         coin_count -= 1
     elif action == leave_dialog:
         dialog_open = False
-    elif action == ask_gpt4o_mini:
+    elif action == ask_mistral:
         next_dialog = selected_answer.get("next_dialog")
         next_dialog = npc["dialogs"][next_dialog]
-        next_dialog["text"] = draw_ask_window(screen)
+        next_dialog["text"] = draw_ask_window(npc, screen)
 
     # Обновляем индекс диалога
     next_dialog = selected_answer.get("next_dialog")
