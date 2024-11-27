@@ -151,7 +151,7 @@ player_width = 50
 player_height = 50
 player_x = SCREEN_WIDTH // 2 - player_width // 2
 player_y = SCREEN_HEIGHT // 2 - player_height // 2
-PLAYER_SPEED = 5
+PLAYER_SPEED = 6
 flip_sprite = True
 
 # Препятствия (rect) / NPC
