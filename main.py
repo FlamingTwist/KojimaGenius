@@ -279,9 +279,9 @@ while True:
 
     if DEBUG:
         pygm.draw.rect(screen, MIAMI_PURPLE, player_rect)  # Рисуем игрока
-    player = pygm.image.load("BWsprites/Character.png")
+    player = pygm.image.load("BWsprites/Chararacter.png")
     player = pygm.transform.scale(player, (100, 100))
-    if flip_sprite == True:
+    if flip_sprite == False:
         player = pygm.transform.flip(player, True, False)
         blit_order.append((player, player_x, player_y-50))
     else:
