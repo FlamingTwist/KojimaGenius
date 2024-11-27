@@ -91,10 +91,10 @@ def draw_dialogue_window(clicked_npc):
     BUTTON_FILL_COLOR = DIALOG_BLACK  # Цвет заливки кнопок
     BUTTON_BORDER_COLOR = WHITE          # Цвет обводки кнопок
     BUTTON_TEXT_COLOR = WHITE            # Цвет текста кнопок
-    BUTTON_X = SCREEN_WIDTH // 7   # Положение кнопок по X
+    BUTTON_X = SCREEN_WIDTH // 100   # Положение кнопок по X
     BUTTONS_Y = SCREEN_HEIGHT // 4   # Положение кнопок по X
     BUTTON_INTERVAL = 10                 # Отступ между кнопками
-    BUTTON_WIDTH = 280                   # Ширина кнопок
+    BUTTON_WIDTH = 470                   # Ширина кнопок
     BUTTON_HEIGHT = 40                   # Высота кнопок
     # BUTTON_FONT = pygm.font.SysFont(None, 24)
 
@@ -156,22 +156,26 @@ flip_sprite = True
 # Препятствия (rect) / NPC
 NPC_PUSH_FORCE = 5
 npcs = [
-    [GregNPC], # Левая сцена - индекс 0
-    [], # индекс 1
-    [] # Правая сцена - индекс 2
+    [GregNPC, TrissNPC], # Левая сцена - индекс 0
+    [CasinoOwnerNPC, StrangerNPC], # индекс 1
+    [SuspiciousBankerNPC, ZoltanNPC] # Правая сцена - индекс 2
 ]
 
-OBJ_PUSH_FORCE = 15
+OBJ_PUSH_FORCE = 20
 bridge_width = 100
 lake_width = 100
 lake_left_up = pygm.Rect(SCREEN_WIDTH - lake_width, 0, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
 lake_left_down = pygm.Rect(SCREEN_WIDTH - lake_width, (SCREEN_HEIGHT + bridge_width) // 2, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
 lake_right_up = pygm.Rect(0, 0, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
 lake_right_down = pygm.Rect(0, (SCREEN_HEIGHT + bridge_width) // 2, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
+wall_width = 80
+wall_left = pygm.Rect(0, (SCREEN_HEIGHT - wall_width) // 2, SCREEN_WIDTH // 3, wall_width)
+wall_right = pygm.Rect(SCREEN_WIDTH * 2 // 3, (SCREEN_HEIGHT - wall_width) // 2, SCREEN_WIDTH // 3, wall_width)
+
 objs = [
-    [],
+    [wall_left],
     [lake_left_up, lake_left_down],
-    [lake_right_up, lake_right_down]
+    [lake_right_up, lake_right_down, wall_right]
 ]
 
 # Диалоги
