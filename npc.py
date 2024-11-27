@@ -109,6 +109,198 @@ GregNPC = {
         }
     ]
 }
+CasinoOwnerNPC = {
+    "name": "Владелец казино",
+    "sprite": "NPC.png",
+    "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
+    "dialog_index": 0,
+    "dialogs": [
+        {#0
+            "text": "Молодой человек, не желаете ли преумножить свой капитал?",
+            "answers": [
+                {"action": None, "next_dialog": 1, "answer": "С большим удовольствием"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Нет, спасибо"}
+            ]
+        },
+        {#1
+            "text": "Предлагаю Вам сыграть в моём казино 1Х Спирт. Я уверен, вы урвете большой куш.",
+            "answers": [
+                {"action": None, "next_dialog": 2, "answer": "Но у меня нет денег..."},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Холера, до свидания"}
+            ]
+        },
+        {#2
+            "text": "Не беспокойтесь, вы можете взять у нашего казино кредит в 200% годовых. Ну что, сыграете?",
+            "answers": [
+                {"action": game_over, "next_dialog": 3, "answer": "Вот это разговор!"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Что-то мне это не нравится"}
+            ]
+        },
+        {#3
+            "text": "Отлично!",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": None, "answer": "..."}
+            ]
+        }
+    ]
+}
+SuspiciousBankerNPC = {
+    "name": "Подозрительный банкир",
+    "sprite": "NPC.png",
+    "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
+    "dialog_index": 0,
+    "dialogs": [
+        {#0
+            "text": "Добро пожаловать ко мне в банк! Чего пожелаете?",
+            "answers": [
+                {"action": None, "next_dialog": 1, "answer": "Мне нужно много денег"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "У вас штукатурка отвалилась"}
+            ]
+        },
+        {#1
+            "text": "Я могу предоставить вам ипотеку на вашу жизнь и ваших детей. Также кредит, который, если Вы не выплатите его через 2 дня, будет повышаться втрое. Что вас интересует?",
+            "answers": [
+                {"action": None, "next_dialog": 2, "answer": "Деньги"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Ничего, до свидания"}
+            ]
+        },
+        {#2
+            "text": "Отлично, оформим все. Подпишите вот эту стопку бумаг.",
+            "answers": [
+                {"action": game_over, "next_dialog": 3, "answer": "[Подписать]"},
+                {"action": None, "next_dialog": 4, "answer": "[Словить прилив осознанности]"}
+            ]
+        },
+        {#3
+            "text": "Хороший выбор!",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": None, "answer": "..."}
+            ]
+        },
+        {#4
+            "text": "Вы куда?",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": 5, "answer": "Всего доброго..."}
+            ]
+        },
+        {#5
+            "text": "...",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": None, "answer": "..."}
+            ]
+        }
+    ]
+}
+ZoltanNPC = {
+    "name": "Золтан",
+    "sprite": "NPC.png",
+    "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
+    "dialog_index": 0,
+    "dialogs": [
+        {#0
+            "text": "Привет, дружище, какими судьбами?",
+            "answers": [
+                {"action": None, "next_dialog": 1, "answer": "Можно одолжить денег?"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Забудь..."}
+            ]
+        },
+        {#1
+            "text": "Ты меня столько раз выручал. Конечно, можно. Я как раз припрятал мешочек на черный день!",
+            "answers": [
+                {"action": give_coin, "next_dialog": 2, "answer": "[Взять деньги]"},
+                {"action": give_coin, "next_dialog": 2, "answer": "Спасибо"}
+            ]
+        },
+        {#2
+            "text": "До скорой встречи!",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": 3, "answer": "..."}
+            ]
+        },
+        {#3
+            "text": "Что-то хотел спросить?",
+            "answers": [
+                {"action": ask_mistral, "next_dialog": 4, "answer": "Ага!"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Неа..."}
+            ]
+        },
+        {#4
+            "text": "Этот текст будет затёрт ответом от gpt4o-mini",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": 3, "answer": "..."}
+            ]
+        }
+    ]
+}
+StrangerNPC = {
+    "name": "Незнакомец в капюшоне",
+    "sprite": "NPC.png",
+    "hitbox": pygm.Rect(100, 200, npc_width, npc_height),
+    "dialog_index": 0,
+    "dialogs": [
+        {#0
+            "text": "Хочешь подзаработать?",
+            "answers": [
+                {"action": None, "next_dialog": 1, "answer": "Слушаю"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Я тебе не знаю"}
+            ]
+        },
+        {#1
+            "text": "Работа простая, нужно всего лишь спрятать парочку пакетиков чая за деревьями. Интересует?",
+            "answers": [
+                {"action": game_over, "next_dialog": 2, "answer": "Звучит просто,давай пакетики"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Воздержусь от таких работ"}
+            ]
+        },
+        {#2
+            "text": "О, друг, пойдём!",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": None, "answer": "Холера!"}
+            ]
+        }
+    ]
+}
+TrissNPC = {
+    "name": "Трисс",
+    "sprite": "NPC.png",
+    "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
+    "dialog_index": 0,
+    "dialogs": [
+        {#0
+            "text": "Геральд, рада тебя видеть!",
+            "answers": [
+                {"action": None, "next_dialog": 1, "answer": "Есть работенка?"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Будь здорова"}
+            ]
+        },
+        {#1
+            "text": "Только грязная. Нужно выгнать крыс со склада. Платят неплохо.",
+            "answers": [
+                {"action": None, "next_dialog": 2, "answer": "[Начать работу] (+200 крон)"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Не, не хочу"}
+            ]
+        },
+        {#2
+            "text": "...",
+            "answers": [
+                {"action": give_coin, "next_dialog": 3, "answer": "[Работать]"}
+            ]
+        },
+        {#3
+            "text": "...",
+            "answers": [
+                {"action": give_coin, "next_dialog": 4, "answer": "[Ещё работать]"}
+            ]
+        },
+        {#4
+            "text": "Отлично поработал. Вот оплата",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": None, "answer": "[Взять деньги]"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Спасибо!"}
+            ]
+        }
+    ]
+}
 
 def get_dialog_text(npc) -> tuple[str, list[str]]:
     """Текущий текст NPC и список вариантов ответов для диалогового окна"""
