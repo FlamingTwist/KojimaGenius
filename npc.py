@@ -17,6 +17,9 @@ def give_coin():
 def take_coin():
     print("Потеряна монетка!")
 
+def game_over():
+    print("Потеряна 1000 монеток!")
+
 def leave_dialog():
     pass
 
