@@ -5,8 +5,7 @@ from npc import *
 
 
 # === ЛОГИКА ВЫТАЛКИВАНИЯ ===
-PUSH_FORCE = 5
-def handle_collision(player_rect, box_rect):
+def handle_collision(player_rect, box_rect, push_forse):
     """Выталкивает игрока, если он сталкивается с объектом"""
     if player_rect.colliderect(box_rect):
         # Вычисляем направление от коробки к игроку
@@ -16,7 +15,7 @@ def handle_collision(player_rect, box_rect):
             length = (dx**2 + dy**2)**0.5
             dx /= length  # Нормализация
             dy /= length  # Нормализация
-            return dx * PUSH_FORCE, dy * PUSH_FORCE
+            return dx * push_forse, dy * push_forse
     return 0, 0
 
 # === ДОБАВЛЕНИЕ СЧЁТЧИКА МОНЕТОК ===
@@ -151,14 +150,28 @@ player_width = 50
 player_height = 50
 player_x = SCREEN_WIDTH // 2 - player_width // 2
 player_y = SCREEN_HEIGHT // 2 - player_height // 2
-PLAYER_SPEED = 6
+PLAYER_SPEED = 8
 flip_sprite = True
 
 # Препятствия (rect) / NPC
+NPC_PUSH_FORCE = 5
 npcs = [
-    [GregNPC], # Левая сцена
+    [GregNPC], # Левая сцена - индекс 0
+    [], # индекс 1
+    [] # Правая сцена - индекс 2
+]
+
+OBJ_PUSH_FORCE = 15
+bridge_width = 100
+lake_width = 100
+lake_left_up = pygm.Rect(SCREEN_WIDTH - lake_width, 0, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
+lake_left_down = pygm.Rect(SCREEN_WIDTH - lake_width, (SCREEN_HEIGHT + bridge_width) // 2, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
+lake_right_up = pygm.Rect(0, 0, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
+lake_right_down = pygm.Rect(0, (SCREEN_HEIGHT + bridge_width) // 2, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
+objs = [
     [],
-    [] # Правая сцена
+    [lake_left_up, lake_left_down],
+    [lake_right_up, lake_right_down]
 ]
 
 # Диалоги
@@ -227,10 +240,19 @@ while True:
 
     # Препятствия и их логика
     player_rect = pygm.Rect(player_x, player_y, player_width, player_height)
+
+    for obj in objs[current_scene]:
+        hitbox = obj
+        # Проверка столкновений
+        dx, dy = handle_collision(player_rect, hitbox, OBJ_PUSH_FORCE)
+        # Применение выталкивания
+        player_x += dx
+        player_y += dy
+
     for npc in npcs[current_scene]:
         hitbox = npc["hitbox"]
         # Проверка столкновений
-        dx, dy = handle_collision(player_rect, hitbox)
+        dx, dy = handle_collision(player_rect, hitbox, NPC_PUSH_FORCE)
         # Применение выталкивания
         player_x += dx
         player_y += dy
@@ -252,7 +274,7 @@ while True:
     blit_order = []
 
     if DEBUG:
-        pygm.draw.rect(screen, GREEN, player_rect)  # Рисуем игрока
+        pygm.draw.rect(screen, MIAMI_PURPLE, player_rect)  # Рисуем игрока
     player = pygm.image.load("BWsprites/Character.png")
     player = pygm.transform.scale(player, (100, 100))
     if flip_sprite == True:
@@ -260,6 +282,11 @@ while True:
         blit_order.append((player, player_x, player_y-50))
     else:
         blit_order.append((player, player_x-50, player_y-50))
+
+    for obj in objs[current_scene]:
+        hitbox = obj
+        if DEBUG:
+            pygm.draw.rect(screen, GREEN, hitbox)
 
     for npc in npcs[current_scene]:
         hitbox = npc["hitbox"]
