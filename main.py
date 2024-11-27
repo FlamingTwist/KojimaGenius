@@ -265,7 +265,7 @@ while True:
         if DEBUG:
             pygm.draw.rect(screen, BLACK, hitbox)
             draw_interaction_zone(hitbox)
-        npc_image = pygm.image.load("BWsprites/NPC.png")
+        npc_image = pygm.image.load("BWsprites/" + npc["sprite"])
         npc_image = pygm.transform.scale(npc_image, (100, 100))
         blit_order.append((npc_image, hitbox.centerx-50, hitbox.centery-75))
     

@@ -44,7 +44,7 @@ def ask_mistral(npc, user_prompt: str) -> str:
 
 GregNPC = {
     "name": "Greg",
-    "sprite": "image.png",
+    "sprite": "NPC.png",
     "hitbox": pygm.Rect(200, 150, npc_width, npc_height),
     "dialog_index": 0,
     "prompt": \
