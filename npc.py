@@ -404,10 +404,16 @@ def progress_questline(npc, selected_answer, dialog_open, coin_count) -> tuple[b
     
     action = selected_answer["action"]
     if action == give_coin:
-        coin_count += 1
+        give_coin()
+        coin_count += 100
     elif action == take_coin:
-        coin_count -= 1
+        take_coin()
+        coin_count -= 100
+    elif action == game_over:
+        game_over()
+        coin_count -= 1000
     elif action == leave_dialog:
+        leave_dialog()
         dialog_open = False
     elif action == ask_mistral:
         next_dialog = selected_answer["next_dialog"]
