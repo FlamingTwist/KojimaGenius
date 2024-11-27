@@ -156,8 +156,9 @@ flip_sprite = True
 
 # Препятствия (rect) / NPC
 npcs = [
-    [GregNPC], # Первая сцена
-    [] # Вторая сцена
+    [GregNPC], # Левая сцена
+    [],
+    [] # Правая сцена
 ]
 
 # Диалоги
@@ -175,7 +176,7 @@ head_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
 # Главный игровой цикл
 clock = pygm.time.Clock()
 game_state : Literal["exploration", "dialogue", "paused"] = "exploration"
-current_scene = 0
+current_scene = 1
 mouse_down = False
 
 while True:
@@ -212,13 +213,13 @@ while True:
             player_x = 0
         else:
             player_x = SCREEN_WIDTH - player_width
-            current_scene = 0
+            current_scene -= 1
     if player_x + player_width > SCREEN_WIDTH:
-        if (current_scene == 1):
+        if (current_scene == 2):
             player_x = SCREEN_WIDTH - player_width
         else:
             player_x = 0
-            current_scene = 1
+            current_scene += 1
     if player_y < 0:
         player_y = 0
     if player_y + player_height > SCREEN_HEIGHT:
