@@ -192,14 +192,14 @@ while True:
     # Перемещение игрока
     if game_state == "exploration":
         if keys[pygm.K_w] or keys[pygm.K_UP]:
-            player_y -= 10
+            player_y -= PLAYER_SPEED
         if keys[pygm.K_s] or keys[pygm.K_DOWN]:
-            player_y += 10
+            player_y += PLAYER_SPEED
         if keys[pygm.K_a] or keys[pygm.K_LEFT]:
-            player_x -= 10
+            player_x -= PLAYER_SPEED
             flip_sprite = False
         if keys[pygm.K_d] or keys[pygm.K_RIGHT]:
-            player_x += 10
+            player_x += PLAYER_SPEED
             flip_sprite = True
 
     if game_state == "exploration":
