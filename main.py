@@ -252,7 +252,7 @@ while True:
     blit_order = []
 
     if DEBUG:
-        pygm.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))  # Рисуем игрока
+        pygm.draw.rect(screen, GREEN, player_rect)  # Рисуем игрока
     player = pygm.image.load("BWsprites/Character.png")
     player = pygm.transform.scale(player, (100, 100))
     if flip_sprite == True:
