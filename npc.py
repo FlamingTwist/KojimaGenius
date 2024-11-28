@@ -149,7 +149,7 @@ CasinoOwnerNPC = {
 }
 SuspiciousBankerNPC = {
     "name": "Подозрительный банкир",
-    "sprite": "NPC.png",
+    "sprite": "Ded.png",
     "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
@@ -161,7 +161,7 @@ SuspiciousBankerNPC = {
             ]
         },
         {#1
-            "text": "Я могу предоставить вам ипотеку на вашу жизнь и ваших детей. Также кредит, который, если Вы не выплатите его через 2 дня, будет повышаться втрое. Что вас интересует?",
+            "text": "Я могу предоставить вам ипотеку на вашу жизнь и ваших детей. Также кредит, который, если Вы не выплатите через 2 дня, будет повышаться втрое. Что вас интересует?",
             "answers": [
                 {"action": None, "next_dialog": 2, "answer": "Деньги"},
                 {"action": leave_dialog, "next_dialog": None, "answer": "Ничего, до свидания"}
@@ -196,7 +196,7 @@ SuspiciousBankerNPC = {
 }
 ZoltanNPC = {
     "name": "Золтан",
-    "sprite": "NPC.png",
+    "sprite": "Zoltan.png",
     "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
@@ -237,7 +237,7 @@ ZoltanNPC = {
 }
 StrangerNPC = {
     "name": "Незнакомец в капюшоне",
-    "sprite": "NPC.png",
+    "sprite": "Man.png",
     "hitbox": pygm.Rect(100, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
@@ -265,7 +265,7 @@ StrangerNPC = {
 }
 TrissNPC = {
     "name": "Трисс",
-    "sprite": "NPC.png",
+    "sprite": "Triss.png",
     "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
