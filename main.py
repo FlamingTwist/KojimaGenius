@@ -184,8 +184,8 @@ flip_sprite = True
 # Препятствия (rect) / NPC
 NPC_PUSH_FORCE = 5
 npcs = [
-    [GregNPC, TrissNPC], # Левая сцена - индекс 0
-    [CasinoOwnerNPC, StrangerNPC], # индекс 1
+    [StrangerNPC, TrissNPC], # Левая сцена - индекс 0
+    [CasinoOwnerNPC], # индекс 1
     [SuspiciousBankerNPC, ZoltanNPC] # Правая сцена - индекс 2
 ]
 
