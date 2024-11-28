@@ -197,13 +197,20 @@ lake_left_down = pygm.Rect(SCREEN_WIDTH - lake_width, (SCREEN_HEIGHT + bridge_wi
 lake_right_up = pygm.Rect(0, 0, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
 lake_right_down = pygm.Rect(0, (SCREEN_HEIGHT + bridge_width) // 2, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
 wall_width = 80
-wall_left = pygm.Rect(0, (SCREEN_HEIGHT - wall_width) // 2, SCREEN_WIDTH // 3, wall_width)
-wall_right = pygm.Rect(SCREEN_WIDTH * 2 // 3, (SCREEN_HEIGHT - wall_width) // 2, SCREEN_WIDTH // 3, wall_width)
+wall_left = pygm.Rect(0, (SCREEN_HEIGHT - wall_width) // 2, 135, wall_width)
+wall_right = pygm.Rect(SCREEN_WIDTH - 135, (SCREEN_HEIGHT - wall_width) // 2, 135, wall_width)
 
 objs = [
     [wall_left],
     [lake_left_up, lake_left_down],
     [lake_right_up, lake_right_down, wall_right]
+]
+
+# Фоны
+backgrounds = [
+    "Stena.png",
+    "River_and_Rick.png",
+    "River_and_Rick_and_Stena.png"
 ]
 
 # Диалоги
@@ -296,7 +303,8 @@ while True:
 
     # Отображаем всё на экране
     screen.fill(WHITE)  # Заполняем экран белым
-    background = pygm.image.load("BWsprites/Background.png")
+    # background = pygm.image.load("BWsprites/Background.png")
+    background = pygm.image.load("BWsprites/" + backgrounds[current_scene])
     background = pygm.transform.scale(background, (800, 600))
     screen.blit(background, (0, 0))
 
