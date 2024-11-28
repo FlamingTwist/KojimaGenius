@@ -40,7 +40,7 @@ def check_interaction(player_rect, hitbox):
     return distance <= INTERACTION_RADIUS
 
 # === ДИАЛОГОВОЕ ОКНО ===
-def draw_game_over(clicked_npc):
+def draw_game_over(text):
     """Рисует окно GAME OVER"""
     # Размеры окна
     window_width = SCREEN_WIDTH - 100
@@ -51,7 +51,7 @@ def draw_game_over(clicked_npc):
     pygm.draw.rect(screen, WHITE, (window_x, window_y, window_width, window_height))
     pygm.draw.rect(screen, DIALOG_BLACK, (window_x+2, window_y+2, window_width-4, window_height-4), 3)
 
-    text = clicked_npc["game_over"]
+    # text = clicked_npc["game_over"]
     SMALL_FONT = pygm.font.Font(font_path, 16)
 
     # Текст GAME OVER
@@ -287,7 +287,7 @@ while True:
         player_y += dy
 
         # Проверяем возможность взаимодействия
-        if not dialog_open and check_interaction(player_rect, hitbox):
+        if not dialog_open and game_state == "exploration" and check_interaction(player_rect, hitbox):
             if keys[pygm.K_e] or keys[pygm.K_9]:  # Взаимодействие на "E"
                 print("Заход в NPC")
                 game_state = "dialogue"
@@ -388,9 +388,12 @@ while True:
         elif not(pygm.mouse.get_pressed()[0]) and mouse_down == True: # ЛКМ отпущена
             mouse_down = False
 
-    if coin_count < 0 and game_state != "dialogue":
+    if (coin_count < 0) and game_state != "dialogue":
         game_state = "paused"
-        draw_game_over(clicked_npc)
+        draw_game_over(clicked_npc["game_over"])
+    if (coin_count >= 300) and game_state != "dialogue":
+        game_state = "paused"
+        draw_game_over("Геральд смог накопить деньги на новые мечи и теперь может снова заниматься своим ремеслом")
 
     # Обновляем экран
     pygm.display.flip()
