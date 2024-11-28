@@ -114,7 +114,7 @@ GregNPC = {
 }
 CasinoOwnerNPC = {
     "name": "Владелец казино",
-    "sprite": "NPC.png",
+    "sprite": "Casino.png",
     "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
     "dialog_index": 0,
     "game_over": "Геральд проиграл все деньги и попал в долговую яму",
