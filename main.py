@@ -112,8 +112,8 @@ def draw_dialogue_window(clicked_npc):
         )
         pygm.draw.rect(screen, BUTTON_FILL_COLOR, button)  # Заливка
         pygm.draw.rect(screen, BUTTON_BORDER_COLOR, button, 2)  # Обводка
-        exit_text = SMALL_FONT.render(answer[i], True, BUTTON_TEXT_COLOR)
-        screen.blit(exit_text, exit_text.get_rect(center=button.center))
+        button_text = SMALL_FONT.render(answer[i], True, BUTTON_TEXT_COLOR)
+        screen.blit(button_text, button_text.get_rect(center=button.center))
         buttons.append(button)
 
     # return buttons[0], buttons[1], buttons[2], buttons[3]  # Возвращает области кнопок
