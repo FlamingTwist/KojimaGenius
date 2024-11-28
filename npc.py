@@ -116,6 +116,7 @@ GregNPC = {
 CasinoOwnerNPC = {
     "name": "Владелец казино",
     "sprite": "Casino.png",
+    "head": "Head_Casino.png",
     "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
     "dialog_index": 0,
     "game_over": "Геральд проиграл все деньги и попал в долговую яму",
@@ -152,6 +153,7 @@ CasinoOwnerNPC = {
 SuspiciousBankerNPC = {
     "name": "Подозрительный банкир",
     "sprite": "Ded.png",
+    "head": "Head_Ded.png",
     "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
@@ -199,6 +201,7 @@ SuspiciousBankerNPC = {
 ZoltanNPC = {
     "name": "Золтан",
     "sprite": "Zoltan.png",
+    "head": "Head_Zoltan.png",
     "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
@@ -240,6 +243,7 @@ ZoltanNPC = {
 StrangerNPC = {
     "name": "Незнакомец в капюшоне",
     "sprite": "Man.png",
+    "head": "Head_Man.png",
     "hitbox": pygm.Rect(100, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
@@ -268,6 +272,7 @@ StrangerNPC = {
 TrissNPC = {
     "name": "Трисс",
     "sprite": "Triss.png",
+    "head": "Head_Triss.png",
     "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
