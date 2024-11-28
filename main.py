@@ -40,6 +40,34 @@ def check_interaction(player_rect, hitbox):
     return distance <= INTERACTION_RADIUS
 
 # === ДИАЛОГОВОЕ ОКНО ===
+def draw_game_over(clicked_npc):
+    """Рисует окно GAME OVER"""
+    # Размеры окна
+    window_width = SCREEN_WIDTH - 100
+    window_height = SCREEN_HEIGHT // 3
+    window_x = (SCREEN_WIDTH - window_width) // 2
+    window_y = (SCREEN_HEIGHT - window_height) // 2
+
+    pygm.draw.rect(screen, WHITE, (window_x, window_y, window_width, window_height))
+    pygm.draw.rect(screen, DIALOG_BLACK, (window_x+2, window_y+2, window_width-4, window_height-4), 3)
+
+    text = clicked_npc["game_over"]
+    SMALL_FONT = pygm.font.Font(font_path, 16)
+
+    # Текст GAME OVER
+    text = text_to_lines(text, SMALL_FONT, window_width - 2*30)
+    text.insert(0, " -- ИГРА ОКОНЧЕНА -- ")
+    text = text[-5:] # Выводим только 5 последних строк
+    
+    for i in range(len(text)):
+        text_surface = SMALL_FONT.render(text[i], True, DIALOG_BLACK)
+        screen.blit(text_surface, (
+            window_x + 30, 
+            window_y + 22 + (SMALL_FONT.get_height() + 20) * i
+        ))
+    return None
+
+# === ДИАЛОГОВОЕ ОКНО ===
 def draw_dialogue_window(clicked_npc):
     """Рисует диалоговое окно с текстом и кнопками"""
     # Размеры окна
@@ -85,7 +113,7 @@ def draw_dialogue_window(clicked_npc):
         screen.blit(text_surface, (
             30, 
             dialog_y + 22 + (SMALL_FONT.get_height() + 20) * i
-        )) 
+        ))
 
     # Настройки кнопок
     BUTTON_FILL_COLOR = DIALOG_BLACK  # Цвет заливки кнопок
@@ -219,7 +247,7 @@ while True:
             player_x += PLAYER_SPEED
             flip_sprite = True
 
-    if game_state == "exploration":
+    if game_state == "exploration" or game_state == "paused":
         if keys[pygm.K_1]:
             pygm.quit()
             sys.exit()
@@ -359,6 +387,10 @@ while True:
                         game_state = "exploration"
         elif not(pygm.mouse.get_pressed()[0]) and mouse_down == True: # ЛКМ отпущена
             mouse_down = False
+
+    if coin_count < 0 and game_state != "dialogue":
+        game_state = "paused"
+        draw_game_over(clicked_npc)
 
     # Обновляем экран
     pygm.display.flip()
