@@ -86,7 +86,7 @@ SuspiciousBankerNPC = {
     "name": "Подозрительный банкир",
     "sprite": "Ded.png",
     "head": "Head_Ded.png",
-    "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
+    "hitbox": pygm.Rect(700, 400, npc_width, npc_height),
     "dialog_index": 0,
     "game_over": "Геральд не смог отдать деньги, поэтому попал в рабство на чайные плантации",
     "dialogs": [
@@ -135,7 +135,7 @@ ZoltanNPC = {
     "name": "Золтан",
     "sprite": "Zoltan.png",
     "head": "Head_Zoltan.png",
-    "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
+    "hitbox": pygm.Rect(700, 150, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
         {#0
@@ -177,7 +177,7 @@ StrangerNPC = {
     "name": "Незнакомец в капюшоне",
     "sprite": "Man.png",
     "head": "Head_Man.png",
-    "hitbox": pygm.Rect(100, 200, npc_width, npc_height),
+    "hitbox": pygm.Rect(50, 150, npc_width, npc_height),
     "dialog_index": 0,
     "game_over": "Мужчина оказался служителем правопорядка под прикрытием. Геральда арестовали",
     "dialogs": [
@@ -207,7 +207,7 @@ TrissNPC = {
     "name": "Трисс",
     "sprite": "Triss.png",
     "head": "Head_Triss.png",
-    "hitbox": pygm.Rect(400, 200, npc_width, npc_height),
+    "hitbox": pygm.Rect(50, 400, npc_width, npc_height),
     "dialog_index": 0,
     "dialogs": [
         {#0
