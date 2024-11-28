@@ -22,7 +22,7 @@ def handle_collision(player_rect, box_rect, push_forse):
 coin_count = 0
 def draw_coin_counter():
     """Рисует счётчик монеток в правом верхнем углу"""
-    coin_text = FONT.render(f"Монетки:{coin_count}", True, DIALOG_BLACK)
+    coin_text = FONT.render(f"Кроны:{coin_count}", True, DIALOG_BLACK)
     screen.blit(coin_text, (SCREEN_WIDTH - coin_text.get_width() - 10, 10))
 
 # === ЗОНЫ ВЗАИМОДЕЙСТВИЯ ===
