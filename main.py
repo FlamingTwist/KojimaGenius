@@ -214,8 +214,6 @@ clockwise = True
 dialog_open = False  # Флаг для открытия диалогового окна
 clicked_npc = None  # Хранит NPC, который говорит
 # TODO убрать масштабирование вручную, использовать 400% Aseprite
-head = pygm.transform.scale(head, (380, 380))
-head_rect = head.get_rect(center=(SCREEN_WIDTH - 120, SCREEN_HEIGHT // 2 - 60))
 
 # Главный игровой цикл
 clock = pygm.time.Clock()
