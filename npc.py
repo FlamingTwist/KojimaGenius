@@ -86,7 +86,7 @@ SuspiciousBankerNPC = {
     "name": "Подозрительный банкир",
     "sprite": "Ded.png",
     "head": "Head_Ded.png",
-    "hitbox": pygm.Rect(700, 400, npc_width, npc_height),
+    "hitbox": pygm.Rect(700, 450, npc_width, npc_height),
     "dialog_index": 0,
     "game_over": "Геральд не смог отдать деньги, поэтому попал в рабство на чайные плантации",
     "dialogs": [
@@ -137,6 +137,7 @@ ZoltanNPC = {
     "head": "Head_Zoltan.png",
     "hitbox": pygm.Rect(700, 150, npc_width, npc_height),
     "dialog_index": 0,
+    "prompt": "Тебя зовут Золтан",
     "dialogs": [
         {#0
             "text": "Привет, дружище, какими судьбами?",
@@ -207,8 +208,9 @@ TrissNPC = {
     "name": "Трисс",
     "sprite": "Triss.png",
     "head": "Head_Triss.png",
-    "hitbox": pygm.Rect(50, 400, npc_width, npc_height),
+    "hitbox": pygm.Rect(50, 450, npc_width, npc_height),
     "dialog_index": 0,
+    "prompt": "Тебя зовут Трисс",
     "dialogs": [
         {#0
             "text": "Геральд, рада тебя видеть!",
@@ -239,8 +241,21 @@ TrissNPC = {
         {#4
             "text": "Отлично поработал. Вот оплата",
             "answers": [
-                {"action": leave_dialog, "next_dialog": None, "answer": "[Взять деньги]"},
-                {"action": leave_dialog, "next_dialog": None, "answer": "Спасибо!"}
+                {"action": leave_dialog, "next_dialog": 5, "answer": "[Взять деньги]"},
+                {"action": leave_dialog, "next_dialog": 5, "answer": "Спасибо!"}
+            ]
+        },
+        {#5
+            "text": "Что-то хотел спросить?",
+            "answers": [
+                {"action": ask_mistral, "next_dialog": 6, "answer": "Ага!"},
+                {"action": leave_dialog, "next_dialog": None, "answer": "Неа..."}
+            ]
+        },
+        {#6
+            "text": "Этот текст будет затёрт ответом от gpt4o-mini",
+            "answers": [
+                {"action": leave_dialog, "next_dialog": 5, "answer": "..."}
             ]
         }
     ]
