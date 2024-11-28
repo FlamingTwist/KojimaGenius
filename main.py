@@ -198,7 +198,7 @@ lake_right_up = pygm.Rect(0, 0, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
 lake_right_down = pygm.Rect(0, (SCREEN_HEIGHT + bridge_width) // 2, lake_width, (SCREEN_HEIGHT - bridge_width) // 2)
 wall_width = 80
 wall_left = pygm.Rect(0, (SCREEN_HEIGHT - wall_width) // 2, 135, wall_width)
-wall_right = pygm.Rect(SCREEN_WIDTH * 2 // 3, (SCREEN_HEIGHT - wall_width) // 2, 135, wall_width)
+wall_right = pygm.Rect(SCREEN_WIDTH - 135, (SCREEN_HEIGHT - wall_width) // 2, 135, wall_width)
 
 objs = [
     [wall_left],
