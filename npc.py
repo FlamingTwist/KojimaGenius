@@ -156,6 +156,7 @@ SuspiciousBankerNPC = {
     "head": "Head_Ded.png",
     "hitbox": pygm.Rect(300, 200, npc_width, npc_height),
     "dialog_index": 0,
+    "game_over": "Геральд не смог отдать деньги, поэтому попал в рабство на чайные плантации",
     "dialogs": [
         {#0
             "text": "Добро пожаловать ко мне в банк! Чего пожелаете?",
@@ -246,6 +247,7 @@ StrangerNPC = {
     "head": "Head_Man.png",
     "hitbox": pygm.Rect(100, 200, npc_width, npc_height),
     "dialog_index": 0,
+    "game_over": "Мужчина оказался служителем правопорядка под прикрытием. Геральда арестовали",
     "dialogs": [
         {#0
             "text": "Хочешь подзаработать?",
